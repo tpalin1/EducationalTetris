@@ -1,11 +1,13 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UIElements;
 
 public class HorizontalMovement : MonoBehaviour
 {
      public float fallSpeed = 1.0f; // Speed at which the block falls. Adjust as needed.
      private float timer = 0f;
+     public Vector3 rotationPoint;
     public SpawnerForObjects spawner; // Reference to the spawner script. Set this in the Unity editor.
 
 
@@ -31,6 +33,9 @@ public class HorizontalMovement : MonoBehaviour
             timer = 0; // Reset the time
         }
 
+
+
+
         //Spawn a new block when the timer reaches 10 seconds
         
         //If they move arrow left, move the blocks left 1 space
@@ -43,5 +48,19 @@ public class HorizontalMovement : MonoBehaviour
         {
             transform.position += new Vector3(1, 0, 0);
         }
+        else if (Input.GetKeyDown(KeyCode.UpArrow))
+        {
+            Rotate();
+        }
     }
+
+     void Rotate()
+    {
+        transform.RotateAround(transform.TransformPoint(rotationPoint), new Vector3(0, 0, 1), 90);
+        
+            transform.RotateAround(transform.TransformPoint(rotationPoint), new Vector3(0, 0, 1), -90);
+    }
+
+
+   
 }
