@@ -6,8 +6,11 @@ public class SpawnerForObjects : MonoBehaviour
 {
 
     public GameObject[] blocks;
-
     public bool isFalling = true;
+    public GameObject upcomingBlock;
+    public GameObject currentBlock;
+    private bool _isFirstBlock = true;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -17,16 +20,24 @@ public class SpawnerForObjects : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        
 
-
-
-        
-        
     }
 
+    /// <summary>
+    /// Used when a new block should be spawned. Updates the current block and upcoming block.
+    /// </summary>
     public void SpawnBlock()
     {
+      if (_isFirstBlock)
+      {
+        currentBlock = GetRandomBlock();
+      }
+      else
+      {
+        currentBlock = upcomingBlock;
+      }
+      upcomingBlock = GetRandomBlock();
+
         // Spawn a random block at the spawner's position, there is Row, Lshape, LRshape, and Square so choose randomly from the list
         // Select a random block from the array
         GameObject blockToSpawn = blocks[Random.Range(0, blocks.Length)];
@@ -36,7 +47,10 @@ public class SpawnerForObjects : MonoBehaviour
 
         isFalling = false;
 
+    }
 
-        
+    private GameObject GetRandomBlock()
+    {
+        return blocks[Random.Range(0, blocks.Length)];
     }
 }
