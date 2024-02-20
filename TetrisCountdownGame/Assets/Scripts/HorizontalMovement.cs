@@ -56,11 +56,8 @@ public class HorizontalMovement : MonoBehaviour
 
      void Rotate()
     {
-        transform.RotateAround(transform.TransformPoint(rotationPoint), new Vector3(0, 0, 1), 90);
-        
-            transform.RotateAround(transform.TransformPoint(rotationPoint), new Vector3(0, 0, 1), -90);
+        Vector3 pivot = GetComponent<SpriteRenderer>().bounds.center;
+        transform.RotateAround(pivot, Vector3.forward, 90f);
     }
-
-
-   
 }
+
