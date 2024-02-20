@@ -1,3 +1,7 @@
+# IDE-related files
+.idea/
+
+# Unity caches and build files get generated locally
 [Ll]ibrary/
 [Tt]emp/
 [Oo]bj/
