@@ -38,19 +38,16 @@ public class SpawnerForObjects : MonoBehaviour
       }
       upcomingBlock = GetRandomBlock();
 
-        // Spawn a random block at the spawner's position, there is Row, Lshape, LRshape, and Square so choose randomly from the list
-        // Select a random block from the array
-        GameObject blockToSpawn = blocks[Random.Range(0, blocks.Length)];
+      // Instantiate the block at the spawner's position
+      Instantiate(currentBlock, transform.position, Quaternion.identity);
 
-        // Instantiate the block at the spawner's position
-        Instantiate(blockToSpawn, transform.position, Quaternion.identity);
-
-        isFalling = false;
-
+      isFalling = false;
     }
 
     private GameObject GetRandomBlock()
     {
+        // Spawn a random block at the spawner's position, there is Row, Lshape, LRshape, and Square so choose randomly from the list
+        // Select a random block from the array
         return blocks[Random.Range(0, blocks.Length)];
     }
 }
