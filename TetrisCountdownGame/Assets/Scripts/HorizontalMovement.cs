@@ -16,7 +16,7 @@ public class HorizontalMovement : MonoBehaviour
     public static int gridWidth = 10;
     public static int gridHeight = 20;
     // Start is called before the first frame update
-     public Transform[,] grid = new Transform[gridWidth, gridHeight];
+     public static Transform[,] grid = new Transform[gridWidth, gridHeight];
 
 
     void Start()
@@ -28,6 +28,8 @@ public class HorizontalMovement : MonoBehaviour
     void Update()
     {
 
+        Debug.Log("This is the grid" + grid);
+
         
 
         timer += Time.deltaTime;
@@ -35,8 +37,10 @@ public class HorizontalMovement : MonoBehaviour
         if(Time.time - previousTime > (Input.GetKey(KeyCode.DownArrow)? fallSpeed /10 : fallSpeed)){
             transform.position += new Vector3(0, -1, 0);
             if(!validMove()){
+
                 transform.position -= new Vector3(0,-1, 0);
                 AddToGrid();
+
                 
                 this.enabled = false;
                 FindObjectOfType<SpawnerForObjects>().SpawnBlock();
@@ -81,42 +85,36 @@ public class HorizontalMovement : MonoBehaviour
         }
     }
 
-    //Allow block collisions so that they can stack on one another
 
-    void OnCollisionEnter2D(Collision2D collision)
+
+   bool validMove()
+{
+    foreach (Transform child in transform)
     {
-        if (collision.gameObject.tag == "Block")
+        int roundedX = Mathf.RoundToInt(child.position.x);
+        int roundedY = Mathf.RoundToInt(child.position.y);
+
+        // Debug logs for debugging
+        Debug.Log("Child position: " + child.position);
+        Debug.Log("Rounded position: (" + roundedX + ", " + roundedY + ")");
+
+        // Check if the block is within the grid boundaries
+        if (roundedX < 0 || roundedX >= gridWidth || roundedY < 0 || roundedY >= gridHeight)
         {
-            FindObjectOfType<SpawnerForObjects>().SpawnBlock();
-            Debug.Log("Block has collided with another block");
-            this.enabled = false;
+            Debug.Log("Block is out of bounds");
+            return false;
+        }
+
+        // Check if the grid cell is already occupied
+        if (grid[roundedX, roundedY] != null)
+        {
+            Debug.Log("Grid cell (" + roundedX + ", " + roundedY + ") is occupied");
+            return false;
         }
     }
+    return true;
+}
 
-   //Do is valid move for the bottom and the left and right
-    bool validMove()
-    {
-        foreach (Transform children in transform)
-        {
-            int roundedX = Mathf.RoundToInt(children.transform.position.x);
-            int roundedY = Mathf.RoundToInt(children.transform.position.y);
-
-
-
-            
-           
-            if (roundedX < 0 || roundedX >= gridWidth || roundedY <0)
-            {
-                return false;
-            }
-            if (grid[roundedX, roundedY] != null)
-            {
-                Debug.Log("Invalid move");
-                return false;
-            }
-        }
-        return true;
-    }
 
     void AddToGrid()
     {
@@ -130,5 +128,29 @@ public class HorizontalMovement : MonoBehaviour
         }
     }
             
+    void checkForLine(){
+        for(int i = gridHeight - 1; i >= 0; i--){
+            if(HasLine(i)){
+                DeleteLine(i);
+                RowDown(i);
+            }
+        }
+    }
+
+    bool HasLine(int i){
+        for(int j = 0; j < gridWidth; j++){
+            if(grid[j,i] == null){
+                return false;
+            }
+        }
+        return true;
+    }
+
+    void DeleteLine(int i){
+        for(int j = 0; j < gridWidth; j++){
+            Destroy(grid[j,i].gameObject);
+            grid[j,i] = null;
+        }
+    }
 }
 
