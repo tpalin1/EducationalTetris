@@ -36,7 +36,10 @@ public class HorizontalMovement : MonoBehaviour
             transform.position += new Vector3(0, -1, 0);
             if(!validMove()){
                 transform.position -= new Vector3(0,-1, 0);
-
+                AddToGrid();
+                
+                this.enabled = false;
+                FindObjectOfType<SpawnerForObjects>().SpawnBlock();
                 
             }
             previousTime = Time.time;
@@ -98,12 +101,12 @@ public class HorizontalMovement : MonoBehaviour
             int roundedX = Mathf.RoundToInt(children.transform.position.x);
             int roundedY = Mathf.RoundToInt(children.transform.position.y);
 
-            Debug.Log("This is x" + roundedX);
-            Debug.Log("This is Y"+ roundedY);
+
+
+            
            
             if (roundedX < 0 || roundedX >= gridWidth || roundedY <0)
             {
-                Debug.Log("Invalid move");
                 return false;
             }
             if (grid[roundedX, roundedY] != null)
@@ -122,6 +125,8 @@ public class HorizontalMovement : MonoBehaviour
             int roundedX = Mathf.RoundToInt(children.transform.position.x);
             int roundedY = Mathf.RoundToInt(children.transform.position.y);
             grid[roundedX, roundedY] = children;
+
+            Debug.Log("This is where it got added to the grid"+ roundedX + " " + roundedY);
         }
     }
             
