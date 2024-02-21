@@ -9,12 +9,16 @@ public class HorizontalMovement : MonoBehaviour
      public float fallSpeed = 1.0f; // Speed at which the block falls. Adjust as needed.
      private float timer = 0f;
      public Vector3 rotationPoint;
-    public SpawnerForObjects spawner; // Reference to the spawner script. Set this in the Unity editor.
+
+
 
 
     public static int gridWidth = 10;
     public static int gridHeight = 20;
     // Start is called before the first frame update
+     public Transform[,] grid = new Transform[gridWidth, gridHeight];
+
+
     void Start()
     {
         
@@ -32,6 +36,7 @@ public class HorizontalMovement : MonoBehaviour
             transform.position += new Vector3(0, -1, 0);
             if(!validMove()){
                 transform.position -= new Vector3(0,-1, 0);
+
                 
             }
             previousTime = Time.time;
@@ -59,14 +64,18 @@ public class HorizontalMovement : MonoBehaviour
         }
         else if (Input.GetKeyDown(KeyCode.UpArrow))
         {
+
             Rotate();
         }
     }
 
      void Rotate()
     {
-        Vector3 pivot = GetComponent<SpriteRenderer>().bounds.center;
-        transform.RotateAround(pivot, Vector3.forward, 90f);
+        transform.RotateAround(transform.TransformPoint(rotationPoint), new Vector3(0, 0, 1), 90);
+        if (!validMove())
+        {
+            transform.RotateAround(transform.TransformPoint(rotationPoint), new Vector3(0, 0, 1), -90);
+        }
     }
 
     //Allow block collisions so that they can stack on one another
@@ -92,7 +101,12 @@ public class HorizontalMovement : MonoBehaviour
             Debug.Log("This is x" + roundedX);
             Debug.Log("This is Y"+ roundedY);
            
-            if (roundedX < -7 || roundedX >= gridWidth+6 || roundedY <-15)
+            if (roundedX < 0 || roundedX >= gridWidth || roundedY <0)
+            {
+                Debug.Log("Invalid move");
+                return false;
+            }
+            if (grid[roundedX, roundedY] != null)
             {
                 Debug.Log("Invalid move");
                 return false;
@@ -100,5 +114,16 @@ public class HorizontalMovement : MonoBehaviour
         }
         return true;
     }
+
+    void AddToGrid()
+    {
+        foreach (Transform children in transform)
+        {
+            int roundedX = Mathf.RoundToInt(children.transform.position.x);
+            int roundedY = Mathf.RoundToInt(children.transform.position.y);
+            grid[roundedX, roundedY] = children;
+        }
+    }
+            
 }
 
