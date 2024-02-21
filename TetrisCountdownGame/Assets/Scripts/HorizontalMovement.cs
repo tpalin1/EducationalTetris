@@ -40,6 +40,7 @@ public class HorizontalMovement : MonoBehaviour
 
                 transform.position -= new Vector3(0,-1, 0);
                 AddToGrid();
+                checkForLine();
 
                 
                 this.enabled = false;
@@ -150,6 +151,18 @@ public class HorizontalMovement : MonoBehaviour
         for(int j = 0; j < gridWidth; j++){
             Destroy(grid[j,i].gameObject);
             grid[j,i] = null;
+        }
+    }
+
+    void RowDown(int i){
+        for(int y = i; y < gridHeight; y++){
+            for(int j = 0; j < gridWidth; j++){
+                if(grid[j,y] != null){
+                    grid[j,y-1] = grid[j,y];
+                    grid[j,y] = null;
+                    grid[j,y-1].transform.position -= new Vector3(0,1,0);
+                }
+            }
         }
     }
 }
