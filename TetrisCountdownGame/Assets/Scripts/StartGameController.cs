@@ -33,7 +33,7 @@ namespace StartGame
         public void LoadNextScene()
         {
             // Load the next scene by name
-            SceneManager.LoadScene("GameStarts");
+            SceneManager.LoadScene("SampleScene");
         }
     }
 }

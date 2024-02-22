@@ -11,7 +11,7 @@ public class StartButtonTest
     public IEnumerator StartButton_LoadsNextScene()
     {
         // Load the start game scene
-        SceneManager.LoadScene("GameStarts");
+        SceneManager.LoadScene("SampleScene");
 
         // Wait for one frame to let the scene load
         yield return null;
