@@ -45,8 +45,7 @@ public class HorizontalMovement : MonoBehaviour
 
                 
                 this.enabled = false;
-                FindObjectOfType<SpawnerForObjects>().SpawnBlock();
-                
+                FindObjectOfType<SpawnerForObjects>().SpawnBlock();                
             }
             previousTime = Time.time;
         }
