@@ -7,13 +7,6 @@ namespace StartGame
 {
     public class StartGameController : MonoBehaviour
     {
-
-        public void OnButtonClick()
-        {
-            // Your code for button click interaction goes here
-            LoadNextScene();
-        }
-
         public UnityEngine.UI.Button StartGameButton;
 
         private void Start()

@@ -72,7 +72,6 @@ public class HorizontalMovement : MonoBehaviour
         }
         else if (Input.GetKeyDown(KeyCode.UpArrow))
         {
-
             Rotate();
         }
     }

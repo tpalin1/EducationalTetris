@@ -8,7 +8,7 @@ using UnityEngine.SceneManagement;
 public class GameStartTest
 {
     [UnityTest]
-    public IEnumerator StartButton_LoadsNextScene()
+    public IEnumerator StartGameButton_LoadsNextScene()
     {
         // Load the start game scene
         SceneManager.LoadScene("SampleScene");

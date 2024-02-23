@@ -1,0 +1,6 @@
+{
+	"name": "ScriptsAD",
+	"references": [
+        "TextMeshPro"
+    ]
+}
