@@ -66,6 +66,7 @@ public class ProblemSet
       if (i % 2 == 0)
       {
         providedSelectables.Add(new Number(_random.Next(MinNumber, MaxNumber)));
+
       }
       else
       {
@@ -81,6 +82,9 @@ public class ProblemSet
 
     return (targetNumber, providedSelectables);
   }
+
+
+  
 
   /**
    * Function to check if the user's solution is correct
