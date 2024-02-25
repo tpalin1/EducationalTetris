@@ -5,6 +5,9 @@ namespace System.Runtime.CompilerServices
   public static class IsExternalInit {}
 }
 
+namespace ProblemSetSpace
+{
+
 /**
  * A ProblemSelectable is one that a user chooses - it is either a number or an operator.
  *
@@ -40,3 +43,5 @@ public enum BinaryOperatorType
  * @author Sebastian Kjallgren
  */
 public record Number(int Value) : ProblemSelectable;
+
+}

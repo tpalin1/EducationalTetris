@@ -2,6 +2,10 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 
+namespace ProblemSetSpace
+{
+
+
 /**
  * Class to represent a problem, in which the user is given a number (and some selectables), and has to prove that a
  * certain order and subset of these selectables produces the number.
@@ -84,7 +88,7 @@ public class ProblemSet
   }
 
 
-  
+
 
   /**
    * Function to check if the user's solution is correct
@@ -148,4 +152,6 @@ public class ProblemSet
 
     return result;
   }
+}
+
 }
