@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Linq;
 
 namespace ProblemSetSpace
@@ -111,40 +112,36 @@ namespace ProblemSetSpace
      */
     public int EvaluateSelectables(List<ProblemSelectable> selectables)
     {
-      int result = 0;
-      BinaryOperatorType lastOperation = BinaryOperatorType.Addition;
-
-      // TODO, make sure it evaluates the selectables correctly
-      // e.g. takes into account operator precedence and associativity
+      string expression = "";
 
       foreach (var selectable in selectables)
       {
         if (selectable is Number num)
         {
-          switch (lastOperation)
-          {
-            case BinaryOperatorType.Addition:
-                result += num.Value;
-              break;
-            case BinaryOperatorType.Subtraction:
-              result -= num.Value;
-              break;
-            case BinaryOperatorType.Multiplication:
-              result *= num.Value;
-              break;
-            case BinaryOperatorType.Division:
-              result = num.Value != 0
-                ? result / num.Value
-                : result; // just keep the same result if division by zero
-              break;
-          }
+          string number = num.ToString();
+          expression += number + " ";
         }
         else if (selectable is BinaryOperator binaryOperator)
         {
-          // Store the last operator to apply in the next loop iteration
-          lastOperation = binaryOperator.BinOp;
+          switch (binaryOperator.BinOp)
+          {
+            case BinaryOperatorType.Addition:
+              expression += "+ ";
+              break;
+            case BinaryOperatorType.Subtraction:
+              expression += "- ";
+              break;
+            case BinaryOperatorType.Multiplication:
+              expression += "* ";
+              break;
+            case BinaryOperatorType.Division:
+              expression += "/ ";
+              break;
+          }
         }
       }
+
+      int result = Convert.ToInt32(new DataTable().Compute(expression, null));
 
       return result;
     }
