@@ -63,7 +63,11 @@ namespace Spawner
       if (upcomingPanel == null)
       {
         Debug.LogError("error: The upcoming panel is not assigned.");
-        return;
+        upcomingPanel = GameObject.FindWithTag(_upcomingWidgetPanelTag);
+        if (upcomingPanel == null)
+        {
+          return;
+        }
       }
 
       // Remove the previous upcoming block
