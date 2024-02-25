@@ -113,7 +113,7 @@ public class ProblemSet
    *
    * @author Sebastian Kjallgren
    */
-  private int EvaluateSelectables(List<ProblemSelectable> selectables)
+  public int EvaluateSelectables(List<ProblemSelectable> selectables)
   {
     int result = 0;
     BinaryOperatorType lastOperation = BinaryOperatorType.Addition;

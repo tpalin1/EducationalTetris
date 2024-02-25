@@ -119,5 +119,63 @@ namespace Tests
         }
       }
     }
+
+    /// <summary>
+    /// A test to see if evaluating an expression with addition is done correct.
+    /// </summary>
+    [Test]
+    public void EvaluateAddition()
+    {
+      List<ProblemSelectable> selectables = new List<ProblemSelectable>
+      {
+        new Number(1),
+        new BinaryOperator(BinaryOperatorType.Addition),
+        new Number(5),
+        new BinaryOperator(BinaryOperatorType.Addition),
+        new Number(3)
+      };
+
+      int result = _problemSet.EvaluateSelectables(selectables);
+
+      Assert.AreEqual(9, result);
+    }
+
+    /// <summary>
+    /// A test to see if evaluating an expression with multiplication is done correct.
+    /// </summary>
+    [Test]
+    public void EvaluateMultiplication()
+    {
+      List<ProblemSelectable> selectables = new List<ProblemSelectable>
+      {
+        new Number(1),
+        new BinaryOperator(BinaryOperatorType.Multiplication),
+        new Number(5),
+        new BinaryOperator(BinaryOperatorType.Multiplication),
+        new Number(3)
+      };
+
+      int result = _problemSet.EvaluateSelectables(selectables);
+
+      Assert.AreEqual(15, result);
+    }
+
+    /// <summary>
+    /// A test to see if evaluating an expression with division is done correct.
+    /// </summary>
+    [Test]
+    public void EvaluateDivision()
+    {
+      List<ProblemSelectable> selectables = new List<ProblemSelectable>
+      {
+        new Number(25),
+        new BinaryOperator(BinaryOperatorType.Division),
+        new Number(5),
+      };
+
+      int result = _problemSet.EvaluateSelectables(selectables);
+
+      Assert.AreEqual(5, result);
+    }
   }
 }
