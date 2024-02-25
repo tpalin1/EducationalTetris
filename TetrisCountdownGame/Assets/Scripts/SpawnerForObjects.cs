@@ -2,8 +2,11 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class SpawnerForObjects : MonoBehaviour
+
+namespace Spawner
 {
+  public class SpawnerForObjects : MonoBehaviour
+  {
 
     public GameObject[] blocks;
     public bool isFalling = true;
@@ -14,7 +17,7 @@ public class SpawnerForObjects : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        SpawnBlock();
+      SpawnBlock();
     }
 
     // Update is called once per frame
@@ -46,8 +49,10 @@ public class SpawnerForObjects : MonoBehaviour
 
     private GameObject GetRandomBlock()
     {
-        // Spawn a random block at the spawner's position, there is Row, Lshape, LRshape, and Square so choose randomly from the list
-        // Select a random block from the array
-        return blocks[Random.Range(0, blocks.Length)];
+      // Spawn a random block at the spawner's position, there is Row, Lshape, LRshape, and Square so choose randomly from the list
+      // Select a random block from the array
+      return blocks[Random.Range(0, blocks.Length)];
     }
+  }
 }
+
