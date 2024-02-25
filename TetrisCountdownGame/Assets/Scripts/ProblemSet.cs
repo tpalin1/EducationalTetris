@@ -32,12 +32,6 @@ namespace ProblemSetSpace
      */
     public (int, List<ProblemSelectable>) GetNewProblemSet(int currentLevel)
     {
-      // TODO:
-      // if current level < 10 - only + and -
-      // if current level < 20 - +, -, *, (, )
-      // if current level < 30 - +, -, *, , (, ), /
-
-      int targetNumber = _random.Next(MinNumber, MaxNumber);
       int numSelectables = _random.Next(5, 10); // Random number of selectables between 5 and 9
       List<ProblemSelectable> solutionSelectables = new List<ProblemSelectable>();
       List<ProblemSelectable> providedSelectables = new List<ProblemSelectable>();
@@ -53,15 +47,13 @@ namespace ProblemSetSpace
         }
         else
         {
-          // randomly add the operator + or - to solutionSelectables
-          BinaryOperatorType operatorType = _random.Next(0, 2) == 0 ? BinaryOperatorType.Addition :
-            BinaryOperatorType.Subtraction;
+          BinaryOperatorType operatorType = GetRandomOperator(currentLevel);
           solutionSelectables.Add(new BinaryOperator(operatorType));
           providedSelectables.Add(new BinaryOperator(operatorType));
         }
       }
 
-      targetNumber = EvaluateSelectables(solutionSelectables);
+      int targetNumber = EvaluateSelectables(solutionSelectables);
 
       // add some more selectables to the providedSelectables
       int j = _random.Next(1, 3);
@@ -70,13 +62,10 @@ namespace ProblemSetSpace
         if (i % 2 == 0)
         {
           providedSelectables.Add(new Number(_random.Next(MinNumber, MaxNumber)));
-
         }
         else
         {
-          // at random, add either a + or - operator
-          BinaryOperatorType operatorType = _random.Next(0, 2) == 0 ? BinaryOperatorType.Addition :
-            BinaryOperatorType.Subtraction;
+          BinaryOperatorType operatorType = GetRandomOperator(currentLevel);
           providedSelectables.Add(new BinaryOperator(operatorType));
         }
       }
@@ -84,7 +73,46 @@ namespace ProblemSetSpace
       // shuffles the provided selectables
       providedSelectables = providedSelectables.OrderBy(x => _random.Next()).ToList();
 
+      // if the target number is too low or too high then recurse to get a new problem set
+      if (targetNumber is < MinNumber or > MaxNumber)
+      {
+        return GetNewProblemSet(currentLevel);
+      }
+
       return (targetNumber, providedSelectables);
+    }
+
+    /// <summary>
+    /// Gets the operators that can be used in the given level.
+    /// </summary>
+    /// <param name="currentLevel"></param>
+    /// <returns>List of BinaryOperatorType</returns>
+    private List<BinaryOperatorType> GetOperatorsForLevel(int currentLevel)
+    {
+      List<BinaryOperatorType> operators = new List<BinaryOperatorType> {BinaryOperatorType.Addition, BinaryOperatorType.Subtraction};
+
+      if (currentLevel >= 10)
+      {
+        operators.Add(BinaryOperatorType.Multiplication);
+      }
+
+      if (currentLevel >= 30)
+      {
+        operators.Add(BinaryOperatorType.Division);
+      }
+
+      return operators;
+    }
+
+    /// <summary>
+    /// Gets a random operator from the list of available operators
+    /// </summary>
+    /// <param name="currentLevel"></param>
+    /// <returns>BinaryOperatorType</returns>
+    private BinaryOperatorType GetRandomOperator(int currentLevel)
+    {
+      List<BinaryOperatorType> operators = GetOperatorsForLevel(currentLevel);
+      return operators[_random.Next(0, operators.Count)];
     }
 
     /**
@@ -141,9 +169,7 @@ namespace ProblemSetSpace
         }
       }
 
-      int result = Convert.ToInt32(new DataTable().Compute(expression, null));
-
-      return result;
+      return Convert.ToInt32(new DataTable().Compute(expression, null));
     }
   }
 }
