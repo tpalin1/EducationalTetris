@@ -2,6 +2,7 @@ using UnityEngine;
 using UnityEngine.UI; // Add this line
 using TMPro;
 using System.Collections.Generic;
+using ProblemSetSpace;
 
 
 public class ProblemSetController : MonoBehaviour
@@ -14,13 +15,14 @@ public class ProblemSetController : MonoBehaviour
 
 
 
-    
+
+    public List<ProblemSelectable> userSelectables = new List<ProblemSelectable>(); //
 
 
     private int currentLevel = 1;
 
 
-    
+
    void Start()
     {
         problemSet = new ProblemSet();
@@ -28,7 +30,12 @@ public class ProblemSetController : MonoBehaviour
         Debug.Log("Target Number: " + newProblem.Item1);
         Debug.Log("Selectables: " + string.Join(", ", newProblem.Item2));
 
-        // Create a button for each number selectable
+        // Set the target number text
+        targetNumberText.text = "Target Number: " + newProblem.Item1; // Add this line
+
+
+
+       // Create a button for each number selectable
         foreach (var selectable in newProblem.Item2)
         {
            if (selectable is Number number)
@@ -41,6 +48,7 @@ public class ProblemSetController : MonoBehaviour
                 button.onClick.AddListener(() => OnButtonClicked(selectable));
             }
         }
+
     }
 
      // This method is called when a button is clicked
@@ -64,8 +72,8 @@ public class ProblemSetController : MonoBehaviour
             Debug.Log("Incorrect solution.");
         }
 
-     
+
     }
 
-    
+
 }
