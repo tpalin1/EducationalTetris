@@ -3,5 +3,10 @@
     "optionalUnityReferences": [
         "TestAssemblies"
     ],
-    "references":[ "GUID:8febb1fd6c514d9ebcf3c99ca449158e" ]
+    "includePlatforms": [
+        "Editor"
+    ],
+    "references": [
+        "TextMeshPro"
+    ]
 }
