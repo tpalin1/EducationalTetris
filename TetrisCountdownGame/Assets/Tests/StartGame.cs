@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
-namespace StartGame
+namespace StartGameTest
 {
-    public class StartGameController : MonoBehaviour
+    public class StartGame : MonoBehaviour
     {
         public UnityEngine.UI.Button StartGameButton;
 
@@ -28,5 +28,7 @@ namespace StartGame
             // Load the next scene by name
             SceneManager.LoadScene("SampleScene");
         }
+
+        
     }
 }
