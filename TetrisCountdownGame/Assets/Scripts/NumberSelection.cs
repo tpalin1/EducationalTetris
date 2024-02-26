@@ -9,10 +9,14 @@ public class ProblemSetController : MonoBehaviour
 {
     private ProblemSet problemSet;
 
+ public Transform buttonContainer; // Add this line
+   public Transform numberButtonContainer; // Container for number buttons
+    public Transform operatorButtonContainer; // Container for operator buttons
 
-  public Transform buttonContainer; // Add this line
+    public TextMeshProUGUI equationContainer; // Container for the equation
     public Button buttonPrefab; // Add this line
 
+     public TextMeshProUGUI targetNumberText; // Add this line
 
 
 
@@ -47,16 +51,57 @@ public class ProblemSetController : MonoBehaviour
                 // Add a click listener to the button
                 button.onClick.AddListener(() => OnButtonClicked(selectable));
             }
+
+            //Add the buttons to the correct container
+            else if (selectable is BinaryOperator binaryOperator)
+            {
+                Button button = Instantiate(buttonPrefab, operatorButtonContainer.transform);
+                string buttonText = "";
+                switch (binaryOperator.BinOp)
+                {
+                    case BinaryOperatorType.Addition:
+                        buttonText = "+";
+                        break;
+                    case BinaryOperatorType.Subtraction:
+                        buttonText = "-";
+                        break;
+                    // Add cases for other binary operators here
+                }
+                button.GetComponentInChildren<TextMeshProUGUI>().text = buttonText;
+                button.onClick.AddListener(() => OnButtonClicked(selectable));
+            }
+
         }
 
     }
 
-     // This method is called when a button is clicked
     void OnButtonClicked(ProblemSelectable selectable)
+{
+    Debug.Log("Button clicked: " + selectable);
+    userSelectables.Add(selectable);
+
+    // Add the selected button to the equation
+    if (selectable is Number number)
     {
         Debug.Log("Button clicked: " + selectable);
         // Here you can add the code to handle the button click
+        equationContainer.text += number.Value.ToString() + " "; // Append number to the equation
     }
+    else if (selectable is BinaryOperator binaryOperator)
+    {
+        switch (binaryOperator.BinOp)
+        {
+            case BinaryOperatorType.Addition:
+                equationContainer.text += "+ "; // Append operator to the equation
+                break;
+            case BinaryOperatorType.Subtraction:
+                equationContainer.text += "- "; // Append operator to the equation
+                break;
+            // Add cases for other binary operators here
+        }
+    }
+}
+
 
 
     // Call this method when the user submits their solution

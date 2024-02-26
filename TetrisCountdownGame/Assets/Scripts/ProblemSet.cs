@@ -138,38 +138,65 @@ namespace ProblemSetSpace
      *
      * @author Sebastian Kjallgren
      */
-    public int EvaluateSelectables(List<ProblemSelectable> selectables)
-    {
-      string expression = "";
 
-      foreach (var selectable in selectables)
-      {
+
+
+public  int EvaluateSelectables(List<ProblemSelectable> selectables)
+{
+    Stack<int> numbers = new Stack<int>();
+    Stack<BinaryOperatorType> operators = new Stack<BinaryOperatorType>();
+
+    foreach (var selectable in selectables)
+    {
         if (selectable is Number num)
         {
-          string number = num.ToString();
-          expression += number + " ";
+            numbers.Push(num.Value);
         }
         else if (selectable is BinaryOperator binaryOperator)
         {
-          switch (binaryOperator.BinOp)
-          {
-            case BinaryOperatorType.Addition:
-              expression += "+ ";
-              break;
-            case BinaryOperatorType.Subtraction:
-              expression += "- ";
-              break;
-            case BinaryOperatorType.Multiplication:
-              expression += "* ";
-              break;
-            case BinaryOperatorType.Division:
-              expression += "/ ";
-              break;
-          }
+            while (operators.Count > 0 && Precedence(binaryOperator.BinOp) <= Precedence(operators.Peek()))
+            {
+                ApplyOperation(numbers, operators);
+            }
+            operators.Push(binaryOperator.BinOp);
         }
-      }
-
-      return Convert.ToInt32(new DataTable().Compute(expression, null));
     }
+
+    while (operators.Count > 0)
+    {
+        ApplyOperation(numbers, operators);
+    }
+
+    return numbers.Pop();
+}
+
+private  int Precedence(BinaryOperatorType op)
+{
+    return op switch
+    {
+        BinaryOperatorType.Addition or BinaryOperatorType.Subtraction => 1,
+        BinaryOperatorType.Multiplication or BinaryOperatorType.Division => 2,
+        _ => 0,
+    };
+}
+
+private  void ApplyOperation(Stack<int> numbers, Stack<BinaryOperatorType> operators)
+{
+    int b = numbers.Pop();
+    int a = numbers.Pop();
+    BinaryOperatorType op = operators.Pop();
+
+    int result = op switch
+    {
+        BinaryOperatorType.Addition => a + b,
+        BinaryOperatorType.Subtraction => a - b,
+        BinaryOperatorType.Multiplication => a * b,
+        BinaryOperatorType.Division => a / b,
+        _ => throw new ArgumentException("Unknown operator"),
+    };
+
+    numbers.Push(result);
+}
+
   }
 }

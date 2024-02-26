@@ -615,7 +615,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -15, y: 121}
+  m_AnchoredPosition: {x: 11, y: 121}
   m_SizeDelta: {x: 265.008, y: 62.7101}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &1691481177
@@ -652,8 +652,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -6.6054, y: 134.2497}
-  m_SizeDelta: {x: 180.192, y: 36.2206}
+  m_AnchoredPosition: {x: 10.999001, y: 114.38}
+  m_SizeDelta: {x: 265.01, y: 49.465}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1691481179
 MonoBehaviour:
@@ -781,8 +781,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b2207efd4ffbfdb48bcd2b6c0cab6abf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  buttonContainer: {fileID: 0}
+  buttonContainer: {fileID: 409951329}
+  numberButtonContainer: {fileID: 409951329}
+  operatorButtonContainer: {fileID: 2066806267}
+  equationContainer: {fileID: 1691481179}
   buttonPrefab: {fileID: 7416177431034881043, guid: 9319b8d192ebbea49839b1c653cc78be, type: 3}
+  targetNumberText: {fileID: 359623249}
 --- !u!4 &1762443839
 Transform:
   m_ObjectHideFlags: 0
