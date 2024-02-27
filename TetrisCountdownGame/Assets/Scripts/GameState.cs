@@ -39,18 +39,19 @@ namespace GameStateSpace
         private static GameState _instance;
         private GameStateEnum _gameState = GameStateEnum.GameNotStarted;
         private List<IGameStateObserver> _observers = new List<IGameStateObserver>();
+        public static GameState Instance { get; private set; }
         
-        /// <summary>
-        /// </summary>
-        /// <returns>The instance of the GameState singleton</returns>
-        public GameState GetInstance()
+        public void Awake()
         {
-            if (_instance == null)
+            if (Instance == null)
             {
-                _instance = gameObject.AddComponent<GameState>();
+                Instance = this;
+                DontDestroyOnLoad(gameObject);
             }
-
-            return _instance;
+            else
+            {
+                Destroy(gameObject);
+            }
         }
 
         /// <summary>
