@@ -61,6 +61,12 @@ public class HorizontalMovement : MonoBehaviour, IGameStateObserver
 
         //Spawn a new block when the timer reaches 10 seconds
         
+        // If _canControlMovement is false, we don't want to allow the player to move the block
+        if (!_canControlMovement)
+        {
+            return;
+        }
+        
         //If they move arrow left, move the blocks left 1 space
         if (Input.GetKeyDown(KeyCode.LeftArrow))
         {
