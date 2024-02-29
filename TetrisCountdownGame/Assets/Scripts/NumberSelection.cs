@@ -3,9 +3,9 @@ using UnityEngine.UI; // Add this line
 using TMPro;
 using System.Collections.Generic;
 using ProblemSetSpace;
+using GameStateSpace;
 
-
-public class ProblemSetController : MonoBehaviour
+public class ProblemSetController : MonoBehaviour, IGameStateObserver
 {
     private ProblemSet problemSet;
 
@@ -77,6 +77,15 @@ public class ProblemSetController : MonoBehaviour
 
     }
 
+    
+
+    //
+
+    public void OnGameStateChanged(GameStateEnum gameStateEnum)
+    {
+        return;
+    }
+
     void OnButtonClicked(ProblemSelectable selectable)
 {
     Debug.Log("Button clicked: " + selectable);
@@ -111,11 +120,20 @@ public class ProblemSetController : MonoBehaviour
     // Call this method when the user submits their solution
     public void CheckSolution(List<ProblemSelectable> userSelectables)
     {
+        if(userSelectables == null)
+        {
+            Debug.Log("User selectables is null");
+        }
         Debug.Log("Here is current solution" + string.Join(", ", userSelectables));
         if (problemSet.IsSolutionCorrect(userSelectables))
         {
             Debug.Log("Correct solution!");
+            GameState.Instance.SetGameState(GameStateEnum.TetrisPlayable);
             currentLevel++;
+
+
+            // // get mew level
+            // var newProblem = problemSet.GetNewProblemSet(currentLevel);
         }
         else
         {
