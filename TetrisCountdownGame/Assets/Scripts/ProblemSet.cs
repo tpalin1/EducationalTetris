@@ -41,9 +41,9 @@ namespace ProblemSetSpace
       {
         if (i % 2 == 0)
         {
-          int value = _random.Next(MinNumber, MaxNumber);
-          solutionSelectables.Add(new Number(value));
-          providedSelectables.Add(new Number(value));
+          Number value = GetRandomNumber(currentLevel);
+          solutionSelectables.Add(value);
+          providedSelectables.Add(value);
         }
         else
         {
@@ -114,6 +114,28 @@ namespace ProblemSetSpace
       List<BinaryOperatorType> operators = GetOperatorsForLevel(currentLevel);
       return operators[_random.Next(0, operators.Count)];
     }
+    
+    /// <summary>
+    /// When the user is at level 0-10 we give small numbers, in the range 0-20.
+    ///
+    /// As they progress to level 10-20 we give numbers in the range 0-50.
+    ///
+    /// Then they progress to level 20-30 we give numbers in the range 0-100.
+    /// </summary>
+    /// <param name="currentLevel"></param>
+    /// <returns></returns>
+    private Number GetRandomNumber(int currentLevel)
+    {
+      switch (currentLevel)
+      {
+        case < 10:
+          return new Number(_random.Next(0, 20));
+        case < 20:
+          return new Number(_random.Next(0, 50));
+        default:
+          return new Number(_random.Next(0, 100));
+      }
+    }
 
     /**
      * Function to check if the user's solution is correct
@@ -138,11 +160,8 @@ namespace ProblemSetSpace
      *
      * @author Sebastian Kjallgren
      */
-
-
-
-public  int EvaluateSelectables(List<ProblemSelectable> selectables)
-{
+    public  int EvaluateSelectables(List<ProblemSelectable> selectables)
+    {
     Stack<int> numbers = new Stack<int>();
     Stack<BinaryOperatorType> operators = new Stack<BinaryOperatorType>();
 
