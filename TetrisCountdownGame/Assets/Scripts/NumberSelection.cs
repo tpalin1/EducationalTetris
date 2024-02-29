@@ -5,7 +5,6 @@ using System.Collections.Generic;
 using GameStateSpace;
 using ProblemSetSpace;
 
-
 public class ProblemSetController : MonoBehaviour, IGameStateObserver
 {
     private ProblemSet problemSet;
@@ -30,12 +29,22 @@ public class ProblemSetController : MonoBehaviour, IGameStateObserver
 
    void Start()
     {
+
+        
         //subscribe to game state
-        GameState.Instance.Subscribe(this);
+        // GameState.Instance.Subscribe(this);
+// Subscribe to the game state
+    GameState.Instance.Subscribe(this);
+    
+
+        //Subscribe to the game state
+        // GameState.Instance.Subscribe(this);
         
         problemSet = new ProblemSet();
         var newProblem = problemSet.GetNewProblemSet(currentLevel);
         Debug.Log("Target Number: " + newProblem.Item1);
+
+
         Debug.Log("Selectables: " + string.Join(", ", newProblem.Item2));
 
         // Set the target number text
@@ -84,22 +93,75 @@ public class ProblemSetController : MonoBehaviour, IGameStateObserver
     /// <param name="gameState"></param>
     public void OnGameStateChanged(GameStateEnum gameState)
     {
-        switch (gameState)
-        {
-            case GameStateEnum.CountdownBeingSolved:
-                problemSet.GetNewProblemSet(currentLevel);
-                // TODO: update the screen?
-                break;
-            default:
-                break;
+        //iF THE game stae is countdownbeingsolved we refresh with a new problem set like we did in start
+
+        if(gameState == GameStateEnum.TetrisGameUnsolved){
+            //Clear and make a new problem 
+            foreach (Transform child in buttonContainer)
+            {
+                Destroy(child.gameObject);
+            }
+            foreach (Transform child in operatorButtonContainer)
+            {
+                Destroy(child.gameObject);
+            }
         }
+
+        if(gameState == GameStateEnum.CountdownBeingSolved)
+        {
+            // Clear the user selectables
+            userSelectables.Clear();
+            // Clear the equation
+            equationContainer.text = "";
+            // Get a new problem set
+            var newProblem = problemSet.GetNewProblemSet(currentLevel);
+            // Set the target number text
+            targetNumberText.text = "Target Number: " + newProblem.Item1;
+            // Create a button for each number selectable
+            foreach (var selectable in newProblem.Item2)
+            {
+                if (selectable is Number number)
+                {
+                    Button button = Instantiate(buttonPrefab, buttonContainer.transform);
+                    string buttonText = number.ToString().Split('=')[1].Trim(' ', '}');
+                    button.GetComponentInChildren<TextMeshProUGUI>().text = buttonText;
+                    button.onClick.AddListener(() => OnButtonClicked(selectable));
+                }
+                else if (selectable is BinaryOperator binaryOperator)
+                {
+                    Button button = Instantiate(buttonPrefab, operatorButtonContainer.transform);
+                    string buttonText = "";
+                    switch (binaryOperator.BinOp)
+                    {
+                        case BinaryOperatorType.Addition:
+                            buttonText = "+";
+                            break;
+                        case BinaryOperatorType.Subtraction:
+                            buttonText = "-";
+                            break;
+                        // Add cases for other binary operators here
+                    }
+                    button.GetComponentInChildren<TextMeshProUGUI>().text = buttonText;
+                    button.onClick.AddListener(() => OnButtonClicked(selectable));
+                }
+            }
+        }
+
         
     }
+
+    
+
+    //
+
+    
 
     void OnButtonClicked(ProblemSelectable selectable)
 {
     Debug.Log("Button clicked: " + selectable);
     userSelectables.Add(selectable);
+    CheckSolution();
+
 
     // Add the selected button to the equation
     if (selectable is Number number)
@@ -131,12 +193,31 @@ public class ProblemSetController : MonoBehaviour, IGameStateObserver
     // Call this method when the user submits their solution
     public void CheckSolution()
     {
+        if(userSelectables == null)
+        {
+            Debug.Log("User selectables is null");
+        }
+        Debug.Log("Here is current solution" + string.Join(", ", userSelectables));
         if (problemSet.IsSolutionCorrect(userSelectables))
         {
             Debug.Log("Correct solution!");
-            currentLevel++;
-            
             GameState.Instance.SetGameState(GameStateEnum.TetrisPlayable);
+            currentLevel++;
+
+
+            //Clear the buttons and the text from the screen
+            foreach (Transform child in buttonContainer)
+            {
+                Destroy(child.gameObject);
+            }
+            foreach (Transform child in operatorButtonContainer)
+            {
+                Destroy(child.gameObject);
+            }
+
+            // // get mew level
+            var newProblem = problemSet.GetNewProblemSet(currentLevel);
+
         }
         else
         {

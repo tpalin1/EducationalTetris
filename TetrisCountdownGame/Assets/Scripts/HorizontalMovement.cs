@@ -4,6 +4,7 @@ using GameStateSpace;
 using Spawner;
 using UnityEngine;
 using UnityEngine.UIElements;
+using GameStateSpace;
 
 public class HorizontalMovement : MonoBehaviour, IGameStateObserver
 {   
@@ -42,6 +43,15 @@ public class HorizontalMovement : MonoBehaviour, IGameStateObserver
 
         timer += Time.deltaTime;
 
+       fallSpeed = 1.0f;
+
+       if(_canControlMovement && Input.GetKeyDown(KeyCode.DownArrow)){
+           fallSpeed = 10.0f;   
+       }
+        
+
+        
+
         if(Time.time - previousTime > (Input.GetKey(KeyCode.DownArrow)? fallSpeed /10 : fallSpeed)){
             transform.position += new Vector3(0, -1, 0);
             if(!validMove()){
@@ -52,8 +62,12 @@ public class HorizontalMovement : MonoBehaviour, IGameStateObserver
 
                 // when the block has fallen and landed, spawn a new one and update game state to not playable
                 this.enabled = false;
-                FindObjectOfType<SpawnerForObjects>().SpawnBlock();                
-                GameState.Instance.SetGameState(GameStateEnum.CountdownBeingSolved);
+                FindObjectOfType<SpawnerForObjects>().SpawnBlock();  
+                if(_canControlMovement == false) {
+                    GameState.Instance.SetGameState(GameStateEnum.TetrisGameUnsolved);
+                    
+                }
+                GameState.Instance.SetGameState(GameStateEnum.CountdownBeingSolved);              
             }
             previousTime = Time.time;
         }
