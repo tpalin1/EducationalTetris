@@ -1,28 +1,35 @@
 using System.Collections;
 using System.Collections.Generic;
+using GameStateSpace;
 using Spawner;
 using UnityEngine;
 using UnityEngine.UIElements;
 
-public class HorizontalMovement : MonoBehaviour
+public class HorizontalMovement : MonoBehaviour, IGameStateObserver
 {   
     private float previousTime;
      public float fallSpeed = 1.0f; // Speed at which the block falls. Adjust as needed.
      private float timer = 0f;
      public Vector3 rotationPoint;
 
-
-
-
     public static int gridWidth = 10;
     public static int gridHeight = 20;
     // Start is called before the first frame update
      public static Transform[,] grid = new Transform[gridWidth, gridHeight];
 
+     private bool _canControlMovement = false;
+
 
     void Start()
     {
+        //subscribe to game state
+        GameState.Instance.Subscribe(this);
         
+    }
+    
+    public void OnGameStateChanged(GameStateEnum gameState)
+    {
+        _canControlMovement = gameState == GameStateEnum.TetrisPlayable;
     }
 
     // Update is called once per frame
@@ -43,9 +50,10 @@ public class HorizontalMovement : MonoBehaviour
                 AddToGrid();
                 checkForLine();
 
-                
+                // when the block has fallen and landed, spawn a new one and update game state to not playable
                 this.enabled = false;
                 FindObjectOfType<SpawnerForObjects>().SpawnBlock();                
+                GameState.Instance.SetGameState(GameStateEnum.CountdownBeingSolved);
             }
             previousTime = Time.time;
         }
@@ -53,6 +61,12 @@ public class HorizontalMovement : MonoBehaviour
 
 
         //Spawn a new block when the timer reaches 10 seconds
+        
+        // If _canControlMovement is false, we don't want to allow the player to move the block
+        if (!_canControlMovement)
+        {
+            return;
+        }
         
         //If they move arrow left, move the blocks left 1 space
         if (Input.GetKeyDown(KeyCode.LeftArrow))

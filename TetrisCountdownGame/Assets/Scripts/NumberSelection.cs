@@ -2,10 +2,11 @@ using UnityEngine;
 using UnityEngine.UI; // Add this line
 using TMPro;
 using System.Collections.Generic;
+using GameStateSpace;
 using ProblemSetSpace;
 
 
-public class ProblemSetController : MonoBehaviour
+public class ProblemSetController : MonoBehaviour, IGameStateObserver
 {
     private ProblemSet problemSet;
 
@@ -29,6 +30,9 @@ public class ProblemSetController : MonoBehaviour
 
    void Start()
     {
+        //subscribe to game state
+        GameState.Instance.Subscribe(this);
+        
         problemSet = new ProblemSet();
         var newProblem = problemSet.GetNewProblemSet(currentLevel);
         Debug.Log("Target Number: " + newProblem.Item1);
@@ -74,6 +78,23 @@ public class ProblemSetController : MonoBehaviour
         }
 
     }
+   
+    /// <summary>
+    /// </summary>
+    /// <param name="gameState"></param>
+    public void OnGameStateChanged(GameStateEnum gameState)
+    {
+        switch (gameState)
+        {
+            case GameStateEnum.CountdownBeingSolved:
+                problemSet.GetNewProblemSet(currentLevel);
+                // TODO: update the screen?
+                break;
+            default:
+                break;
+        }
+        
+    }
 
     void OnButtonClicked(ProblemSelectable selectable)
 {
@@ -100,17 +121,22 @@ public class ProblemSetController : MonoBehaviour
             // Add cases for other binary operators here
         }
     }
+    
+    // check if the solution is correct
+    CheckSolution();
 }
 
 
 
     // Call this method when the user submits their solution
-    public void CheckSolution(List<ProblemSelectable> userSelectables)
+    public void CheckSolution()
     {
         if (problemSet.IsSolutionCorrect(userSelectables))
         {
             Debug.Log("Correct solution!");
             currentLevel++;
+            
+            GameState.Instance.SetGameState(GameStateEnum.TetrisPlayable);
         }
         else
         {
