@@ -29,7 +29,15 @@ public class ProblemSetController : MonoBehaviour, IGameStateObserver
 
    void Start()
     {
+
+        
         //subscribe to game state
+        // GameState.Instance.Subscribe(this);
+// Subscribe to the game state
+    GameState.Instance.Subscribe(this);
+    
+
+        //Subscribe to the game state
         // GameState.Instance.Subscribe(this);
         
         problemSet = new ProblemSet();
@@ -85,7 +93,60 @@ public class ProblemSetController : MonoBehaviour, IGameStateObserver
     /// <param name="gameState"></param>
     public void OnGameStateChanged(GameStateEnum gameState)
     {
-        return;
+        //iF THE game stae is countdownbeingsolved we refresh with a new problem set like we did in start
+
+        if(gameState == GameStateEnum.TetrisGameUnsolved){
+            //Clear and make a new problem 
+            foreach (Transform child in buttonContainer)
+            {
+                Destroy(child.gameObject);
+            }
+            foreach (Transform child in operatorButtonContainer)
+            {
+                Destroy(child.gameObject);
+            }
+        }
+
+        if(gameState == GameStateEnum.CountdownBeingSolved)
+        {
+            // Clear the user selectables
+            userSelectables.Clear();
+            // Clear the equation
+            equationContainer.text = "";
+            // Get a new problem set
+            var newProblem = problemSet.GetNewProblemSet(currentLevel);
+            // Set the target number text
+            targetNumberText.text = "Target Number: " + newProblem.Item1;
+            // Create a button for each number selectable
+            foreach (var selectable in newProblem.Item2)
+            {
+                if (selectable is Number number)
+                {
+                    Button button = Instantiate(buttonPrefab, buttonContainer.transform);
+                    string buttonText = number.ToString().Split('=')[1].Trim(' ', '}');
+                    button.GetComponentInChildren<TextMeshProUGUI>().text = buttonText;
+                    button.onClick.AddListener(() => OnButtonClicked(selectable));
+                }
+                else if (selectable is BinaryOperator binaryOperator)
+                {
+                    Button button = Instantiate(buttonPrefab, operatorButtonContainer.transform);
+                    string buttonText = "";
+                    switch (binaryOperator.BinOp)
+                    {
+                        case BinaryOperatorType.Addition:
+                            buttonText = "+";
+                            break;
+                        case BinaryOperatorType.Subtraction:
+                            buttonText = "-";
+                            break;
+                        // Add cases for other binary operators here
+                    }
+                    button.GetComponentInChildren<TextMeshProUGUI>().text = buttonText;
+                    button.onClick.AddListener(() => OnButtonClicked(selectable));
+                }
+            }
+        }
+
         
     }
 
@@ -140,12 +201,23 @@ public class ProblemSetController : MonoBehaviour, IGameStateObserver
         if (problemSet.IsSolutionCorrect(userSelectables))
         {
             Debug.Log("Correct solution!");
-            // GameState.Instance.SetGameState(GameStateEnum.TetrisPlayable);
+            GameState.Instance.SetGameState(GameStateEnum.TetrisPlayable);
             currentLevel++;
 
 
+            //Clear the buttons and the text from the screen
+            foreach (Transform child in buttonContainer)
+            {
+                Destroy(child.gameObject);
+            }
+            foreach (Transform child in operatorButtonContainer)
+            {
+                Destroy(child.gameObject);
+            }
+
             // // get mew level
-            // var newProblem = problemSet.GetNewProblemSet(currentLevel);
+            var newProblem = problemSet.GetNewProblemSet(currentLevel);
+
         }
         else
         {

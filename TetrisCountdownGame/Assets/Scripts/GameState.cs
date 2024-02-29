@@ -17,6 +17,8 @@ namespace GameStateSpace
         TetrisPlayableButPaused,
         TetrisGameOver,
         CountdownBeingSolved,
+
+        TetrisGameUnsolved,
         CountdownBeingSolvedButPaused,
     }
     
@@ -39,13 +41,29 @@ namespace GameStateSpace
         private static GameState _instance;
         private GameStateEnum _gameState = GameStateEnum.GameNotStarted;
         private List<IGameStateObserver> _observers = new List<IGameStateObserver>();
-        public static GameState Instance { get; private set; }
+       public static GameState Instance
+{
+    get
+    {
+        if (_instance == null)
+        {
+            _instance = FindObjectOfType<GameState>();
+            if (_instance == null)
+            {
+                GameObject gameObject = new GameObject();
+                _instance = gameObject.AddComponent<GameState>();
+                DontDestroyOnLoad(gameObject);
+            }
+        }
+        return _instance;
+    }
+}
         
         public void Awake()
         {
-            if (Instance == null)
+            if (_instance == null)
             {
-                Instance = this;
+                _instance = this;
                 DontDestroyOnLoad(gameObject);
             }
             else
