@@ -62,7 +62,7 @@ public class ProblemSetController : MonoBehaviour, IGameStateObserver
                 button.GetComponentInChildren<TextMeshProUGUI>().text = buttonText; // Change this line
 
                 // Add a click listener to the button
-                button.onClick.AddListener(() => OnButtonClicked(selectable));
+                button.onClick.AddListener(() => OnButtonClicked(selectable, button));
             }
 
             //Add the buttons to the correct container
@@ -81,7 +81,7 @@ public class ProblemSetController : MonoBehaviour, IGameStateObserver
                     // Add cases for other binary operators here
                 }
                 button.GetComponentInChildren<TextMeshProUGUI>().text = buttonText;
-                button.onClick.AddListener(() => OnButtonClicked(selectable));
+                button.onClick.AddListener(() => OnButtonClicked(selectable, button));
             }
 
         }
@@ -125,7 +125,7 @@ public class ProblemSetController : MonoBehaviour, IGameStateObserver
                     Button button = Instantiate(buttonPrefab, buttonContainer.transform);
                     string buttonText = number.ToString().Split('=')[1].Trim(' ', '}');
                     button.GetComponentInChildren<TextMeshProUGUI>().text = buttonText;
-                    button.onClick.AddListener(() => OnButtonClicked(selectable));
+                    button.onClick.AddListener(() => OnButtonClicked(selectable, button));
                 }
                 else if (selectable is BinaryOperator binaryOperator)
                 {
@@ -142,7 +142,7 @@ public class ProblemSetController : MonoBehaviour, IGameStateObserver
                         // Add cases for other binary operators here
                     }
                     button.GetComponentInChildren<TextMeshProUGUI>().text = buttonText;
-                    button.onClick.AddListener(() => OnButtonClicked(selectable));
+                    button.onClick.AddListener(() => OnButtonClicked(selectable, button));
                 }
             }
         }
@@ -156,11 +156,17 @@ public class ProblemSetController : MonoBehaviour, IGameStateObserver
 
     
 
-    void OnButtonClicked(ProblemSelectable selectable)
+    void OnButtonClicked(ProblemSelectable selectable, Button button)
 {
     Debug.Log("Button clicked: " + selectable);
     userSelectables.Add(selectable);
     CheckSolution();
+
+    //Delete the button that was clicked
+
+
+
+
 
 
     // Add the selected button to the equation
@@ -169,6 +175,9 @@ public class ProblemSetController : MonoBehaviour, IGameStateObserver
         Debug.Log("Button clicked: " + selectable);
         // Here you can add the code to handle the button click
         equationContainer.text += number.Value.ToString() + " "; // Append number to the equation
+
+        //Delete the button that was clicked from the screen
+        Destroy(button.gameObject);
     }
     else if (selectable is BinaryOperator binaryOperator)
     {
@@ -183,6 +192,8 @@ public class ProblemSetController : MonoBehaviour, IGameStateObserver
             // Add cases for other binary operators here
         }
     }
+
+    //Delete the button that was clicked from the screen
     
     // check if the solution is correct
     CheckSolution();
