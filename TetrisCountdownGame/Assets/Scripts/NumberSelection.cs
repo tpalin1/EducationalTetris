@@ -116,7 +116,7 @@ public class ProblemSetController : MonoBehaviour, IGameStateObserver
             // Get a new problem set
             var newProblem = problemSet.GetNewProblemSet(currentLevel);
             // Set the target number text
-            targetNumberText.text = "Target Number: " + newProblem.Item1;
+            targetNumberText.text = " " + newProblem.Item1;
             // Create a button for each number selectable
             foreach (var selectable in newProblem.Item2)
             {
