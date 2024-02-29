@@ -32,6 +32,8 @@ public class ProblemSetController : MonoBehaviour
         problemSet = new ProblemSet();
         var newProblem = problemSet.GetNewProblemSet(currentLevel);
         Debug.Log("Target Number: " + newProblem.Item1);
+
+
         Debug.Log("Selectables: " + string.Join(", ", newProblem.Item2));
 
         // Set the target number text
@@ -79,6 +81,8 @@ public class ProblemSetController : MonoBehaviour
 {
     Debug.Log("Button clicked: " + selectable);
     userSelectables.Add(selectable);
+    CheckSolution(userSelectables);
+
 
     // Add the selected button to the equation
     if (selectable is Number number)
@@ -107,6 +111,7 @@ public class ProblemSetController : MonoBehaviour
     // Call this method when the user submits their solution
     public void CheckSolution(List<ProblemSelectable> userSelectables)
     {
+        Debug.Log("Here is current solution" + string.Join(", ", userSelectables));
         if (problemSet.IsSolutionCorrect(userSelectables))
         {
             Debug.Log("Correct solution!");

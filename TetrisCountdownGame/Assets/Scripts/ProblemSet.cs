@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Linq;
+using UnityEngine; // Add this line
 
 namespace ProblemSetSpace
 {
@@ -14,12 +15,20 @@ namespace ProblemSetSpace
    */
   public class ProblemSet
   {
-    private const int MinNumber = -64;
-    private const int MaxNumber = 128;
-    private readonly Random _random = new Random();
+    
+    private const int MinNumber = 0;
+    private const int MaxNumber = 30;
+
+    private readonly System.Random _random = new System.Random();
+
     private readonly int _targetNumber = 0;
+
+    public int targetNumber;
     private List<ProblemSelectable> _solutionSelectables;
     private List<ProblemSelectable> _providedSelectables;
+
+
+    
 
     /**
      * Function to retrieve a new problem set
@@ -53,7 +62,7 @@ namespace ProblemSetSpace
         }
       }
 
-      int targetNumber = EvaluateSelectables(solutionSelectables);
+     targetNumber = EvaluateSelectables(solutionSelectables);
 
       // add some more selectables to the providedSelectables
       int j = _random.Next(1, 3);
@@ -124,9 +133,22 @@ namespace ProblemSetSpace
      *
      * @author Sebastian Kjallgren
      */
+    // public bool IsSolutionCorrect(List<ProblemSelectable> userSelectables)
+    // {
+    //   return EvaluateSelectables(userSelectables) == _targetNumber;
+    // }
+
+
+     //Get the users current input and see if it matches the target number
     public bool IsSolutionCorrect(List<ProblemSelectable> userSelectables)
     {
-      return EvaluateSelectables(userSelectables) == _targetNumber;
+
+        int userSolution = EvaluateSelectables(userSelectables);
+        UnityEngine.Debug.Log("Target number: " + targetNumber);
+
+        Debug.Log("User solution: " + userSolution);
+
+        return userSolution == targetNumber;
     }
 
     /**
@@ -141,7 +163,7 @@ namespace ProblemSetSpace
 
 
 
-public  int EvaluateSelectables(List<ProblemSelectable> selectables)
+public int EvaluateSelectables(List<ProblemSelectable> selectables)
 {
     Stack<int> numbers = new Stack<int>();
     Stack<BinaryOperatorType> operators = new Stack<BinaryOperatorType>();
@@ -154,7 +176,7 @@ public  int EvaluateSelectables(List<ProblemSelectable> selectables)
         }
         else if (selectable is BinaryOperator binaryOperator)
         {
-            while (operators.Count > 0 && Precedence(binaryOperator.BinOp) <= Precedence(operators.Peek()))
+            while (operators.Count > 0 && numbers.Count > 1 && Precedence(binaryOperator.BinOp) <= Precedence(operators.Peek()))
             {
                 ApplyOperation(numbers, operators);
             }
@@ -162,14 +184,13 @@ public  int EvaluateSelectables(List<ProblemSelectable> selectables)
         }
     }
 
-    while (operators.Count > 0)
+    while (operators.Count > 0 && numbers.Count > 1)
     {
         ApplyOperation(numbers, operators);
     }
 
-    return numbers.Pop();
+    return numbers.Count > 0 ? numbers.Pop() : 0;
 }
-
 private  int Precedence(BinaryOperatorType op)
 {
     return op switch
