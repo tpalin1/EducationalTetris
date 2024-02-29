@@ -747,7 +747,7 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 1391377227}
-        m_TargetAssemblyTypeName: StartGameController, Assembly-CSharp
+        m_TargetAssemblyTypeName: StartGame.StartGameController, Scripts
         m_MethodName: LoadNextScene
         m_Mode: 1
         m_Arguments:

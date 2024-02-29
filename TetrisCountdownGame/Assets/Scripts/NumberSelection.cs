@@ -40,7 +40,7 @@ public class ProblemSetController : MonoBehaviour, IGameStateObserver
         Debug.Log("Selectables: " + string.Join(", ", newProblem.Item2));
 
         // Set the target number text
-        targetNumberText.text = "Target Number: " + newProblem.Item1; // Add this line
+        targetNumberText.text = " " + newProblem.Item1; // Add this line
 
 
 
