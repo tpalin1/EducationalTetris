@@ -2,8 +2,8 @@ using UnityEngine;
 using UnityEngine.UI; // Add this line
 using TMPro;
 using System.Collections.Generic;
-using ProblemSetSpace;
 using GameStateSpace;
+using ProblemSetSpace;
 
 public class ProblemSetController : MonoBehaviour, IGameStateObserver
 {
@@ -29,6 +29,9 @@ public class ProblemSetController : MonoBehaviour, IGameStateObserver
 
    void Start()
     {
+        //subscribe to game state
+        // GameState.Instance.Subscribe(this);
+        
         problemSet = new ProblemSet();
         var newProblem = problemSet.GetNewProblemSet(currentLevel);
         Debug.Log("Target Number: " + newProblem.Item1);
@@ -76,21 +79,27 @@ public class ProblemSetController : MonoBehaviour, IGameStateObserver
         }
 
     }
+   
+    /// <summary>
+    /// </summary>
+    /// <param name="gameState"></param>
+    public void OnGameStateChanged(GameStateEnum gameState)
+    {
+        return;
+        
+    }
 
     
 
     //
 
-    public void OnGameStateChanged(GameStateEnum gameStateEnum)
-    {
-        return;
-    }
+    
 
     void OnButtonClicked(ProblemSelectable selectable)
 {
     Debug.Log("Button clicked: " + selectable);
     userSelectables.Add(selectable);
-    CheckSolution(userSelectables);
+    CheckSolution();
 
 
     // Add the selected button to the equation
@@ -113,12 +122,15 @@ public class ProblemSetController : MonoBehaviour, IGameStateObserver
             // Add cases for other binary operators here
         }
     }
+    
+    // check if the solution is correct
+    CheckSolution();
 }
 
 
 
     // Call this method when the user submits their solution
-    public void CheckSolution(List<ProblemSelectable> userSelectables)
+    public void CheckSolution()
     {
         if(userSelectables == null)
         {
@@ -128,7 +140,7 @@ public class ProblemSetController : MonoBehaviour, IGameStateObserver
         if (problemSet.IsSolutionCorrect(userSelectables))
         {
             Debug.Log("Correct solution!");
-            GameState.Instance.SetGameState(GameStateEnum.TetrisPlayable);
+            // GameState.Instance.SetGameState(GameStateEnum.TetrisPlayable);
             currentLevel++;
 
 

@@ -4,6 +4,7 @@ using GameStateSpace;
 using Spawner;
 using UnityEngine;
 using UnityEngine.UIElements;
+using GameStateSpace;
 
 public class HorizontalMovement : MonoBehaviour, IGameStateObserver
 {   
@@ -50,7 +51,7 @@ public class HorizontalMovement : MonoBehaviour, IGameStateObserver
                 AddToGrid();
                 checkForLine();
 
-                
+                // when the block has fallen and landed, spawn a new one and update game state to not playable
                 this.enabled = false;
                 FindObjectOfType<SpawnerForObjects>().SpawnBlock();                
             }
