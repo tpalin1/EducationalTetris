@@ -50,9 +50,10 @@ public class HorizontalMovement : MonoBehaviour, IGameStateObserver
                 AddToGrid();
                 checkForLine();
 
-                
+                // when the block has fallen and landed, spawn a new one and update game state to not playable
                 this.enabled = false;
                 FindObjectOfType<SpawnerForObjects>().SpawnBlock();                
+                GameState.Instance.SetGameState(GameStateEnum.CountdownBeingSolved);
             }
             previousTime = Time.time;
         }
