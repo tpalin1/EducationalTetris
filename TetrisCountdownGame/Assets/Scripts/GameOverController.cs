@@ -44,8 +44,8 @@ namespace GameOver
             // Quit the game only in build, not in editor
             UnityEditor.EditorApplication.isPlaying = false;
 #else
-            // Quit the application in build
-            Application.Quit();
+                        // Quit the application in build
+                        Application.Quit();
 #endif
         }
     }
