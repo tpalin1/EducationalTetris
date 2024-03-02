@@ -88,39 +88,39 @@ public class ProblemSetController : MonoBehaviour, IGameStateObserver
     }
    
     /// <summary>
+    /// A method that is called when the game state changes
     /// </summary>
     /// <param name="gameState"></param>
+    /// <author>Sebastian Kjallgren, Tom Palin</author>
     public void OnGameStateChanged(GameStateEnum gameState)
     {
-        //iF THE game stae is countdownbeingsolved we refresh with a new problem set like we did in start
-
-        if(gameState == GameStateEnum.TetrisGameUnsolved){
-            //Clear and make a new problem 
-            foreach (Transform child in buttonContainer)
-            {
-                Destroy(child.gameObject);
-            }
-            foreach (Transform child in operatorButtonContainer)
-            {
-                Destroy(child.gameObject);
-            }
-        }
-
-        if(gameState == GameStateEnum.CountdownBeingSolved)
+        switch (gameState)
         {
-            // Clear the user selectables
-            userSelectables.Clear();
-            // Clear the equation
-            equationContainer.text = "";
-            // Get a new problem set
-            var newProblem = problemSet.GetNewProblemSet(currentLevel);
-            // Set the target number text
-            targetNumberText.text = " " + newProblem.Item1;
-            // Create a button for each number selectable
-            foreach (var selectable in newProblem.Item2)
-            {
-                AddSelectableToCanvas(selectable);
-            }
+            case GameStateEnum.TetrisGameUnsolved:
+                //Clear and make a new problem 
+                foreach (Transform child in buttonContainer)
+                {
+                    Destroy(child.gameObject);
+                }
+                foreach (Transform child in operatorButtonContainer)
+                {
+                    Destroy(child.gameObject);
+                }
+                break;
+            case GameStateEnum.CountdownBeingSolved:
+                userSelectables.Clear();
+                equationContainer.text = "";
+                
+                var newProblem = problemSet.GetNewProblemSet(currentLevel);
+                targetNumberText.text = " " + newProblem.Item1;
+                
+                // Create a button for each number selectable
+                foreach (var selectable in newProblem.Item2)
+                {
+                    AddSelectableToCanvas(selectable);
+                }
+                break;
+            // ... for other game states
         }
 
         
@@ -281,39 +281,28 @@ public class ProblemSetController : MonoBehaviour, IGameStateObserver
 
 
 
-    // Call this method when the user submits their solution
+    /// <summary>
+    /// Checks if the user's solution is correct
+    /// </summary>
+    /// <author>Sebastian Kjallgren, Tom Palin</author>
     public void CheckSolution()
     {
-        if(userSelectables == null)
+        if (userSelectables == null) return;
+
+        if (!problemSet.IsSolutionCorrect(userSelectables)) return;
+        
+        // update the game state to notify the tetris board that the user is allowed to interact with the board
+        GameState.Instance.SetGameState(GameStateEnum.TetrisPlayable);
+        currentLevel++;
+
+        //Clear the buttons and the text from the screen
+        foreach (Transform child in buttonContainer)
         {
-            Debug.Log("User selectables is null");
+            Destroy(child.gameObject);
         }
-        Debug.Log("Here is current solution" + string.Join(", ", userSelectables));
-        if (problemSet.IsSolutionCorrect(userSelectables))
+        foreach (Transform child in operatorButtonContainer)
         {
-            Debug.Log("Correct solution!");
-            GameState.Instance.SetGameState(GameStateEnum.TetrisPlayable);
-            currentLevel++;
-
-
-            //Clear the buttons and the text from the screen
-            foreach (Transform child in buttonContainer)
-            {
-                Destroy(child.gameObject);
-            }
-            foreach (Transform child in operatorButtonContainer)
-            {
-                Destroy(child.gameObject);
-            }
-
+            Destroy(child.gameObject);
         }
-        else
-        {
-            Debug.Log("Incorrect solution.");
-        }
-
-
     }
-
-
 }
