@@ -23,72 +23,62 @@ namespace ProblemSetSpace
 
     private readonly int _targetNumber = 0;
 
-    public int targetNumber;
+    private int targetNumber;
     private List<ProblemSelectable> _solutionSelectables;
     private List<ProblemSelectable> _providedSelectables;
 
-
-    
-
-    /**
-     * Function to retrieve a new problem set
-     *
-     * @param currentLevel - the current level of the game
-     *
-     * @return a tuple containing the number and the selectables
-     *
-     * @author Sebastian Kjallgren
-     */
+    /// <summary>
+    /// Generates a new problem set for the user to solve.
+    /// </summary>
+    /// <returns>A tuple containing the number and the selectables</returns>
+    /// <author>Sebastian Kjallgren</author>
     public (int, List<ProblemSelectable>) GetNewProblemSet(int currentLevel)
-    {
-      int numSelectables = _random.Next(5, 10); // Random number of selectables between 5 and 9
-      List<ProblemSelectable> solutionSelectables = new List<ProblemSelectable>();
-      List<ProblemSelectable> providedSelectables = new List<ProblemSelectable>();
+    { 
+        int numSelectables = _random.Next(5, 10); // Random number of selectables between 5 and 9
+        List<ProblemSelectable> solutionSelectables = new List<ProblemSelectable>();
+        List<ProblemSelectable> providedSelectables = new List<ProblemSelectable>();
 
-      // generate the solutionSelectables
-      for (int i = 0; i < numSelectables; i++)
-      {
-        if (i % 2 == 0)
-        {
-          Number value = GetRandomNumber(currentLevel);
-          solutionSelectables.Add(value);
-          providedSelectables.Add(value);
+        // generate the solutionSelectables
+        for (int i = 0; i < numSelectables; i++)
+        { 
+            if (i % 2 == 0)
+            {
+                Number value = GetRandomNumber(currentLevel);
+                solutionSelectables.Add(value);
+                providedSelectables.Add(value);
+            }
+            else
+            {
+                BinaryOperatorType operatorType = GetRandomOperator(currentLevel);
+                solutionSelectables.Add(new BinaryOperator(operatorType));
+            }
         }
-        else
-        {
-          BinaryOperatorType operatorType = GetRandomOperator(currentLevel);
-          solutionSelectables.Add(new BinaryOperator(operatorType));
-          providedSelectables.Add(new BinaryOperator(operatorType));
+
+        targetNumber = EvaluateSelectables(solutionSelectables);
+
+        // add some more selectables to the providedSelectables -- this is to make the problem more interesting
+        int j = _random.Next(1, 2);
+        for (int i = 0; i < j; i++)
+        { 
+            providedSelectables.Add(GetRandomNumber(currentLevel));
         }
-      }
-
-     targetNumber = EvaluateSelectables(solutionSelectables);
-
-      // add some more selectables to the providedSelectables
-      int j = _random.Next(1, 3);
-      for (int i = 0; i < j; i++)
-      {
-        if (i % 2 == 0)
+        
+        // add the available operators to the providedSelectables
+        foreach (var op in GetOperatorsForLevel(currentLevel))
         {
-          providedSelectables.Add(new Number(_random.Next(MinNumber, MaxNumber)));
+            providedSelectables.Add(new BinaryOperator(op));
         }
-        else
+
+        // shuffles the provided selectables
+        providedSelectables = providedSelectables.OrderBy(x => _random.Next()).ToList();
+
+        // if the target number is too low or too high then recurse to get a new problem set
+        if (targetNumber is < MinNumber or > MaxNumber)
         {
-          BinaryOperatorType operatorType = GetRandomOperator(currentLevel);
-          providedSelectables.Add(new BinaryOperator(operatorType));
+            return GetNewProblemSet(currentLevel);
         }
-      }
 
-      // shuffles the provided selectables
-      providedSelectables = providedSelectables.OrderBy(x => _random.Next()).ToList();
-
-      // if the target number is too low or too high then recurse to get a new problem set
-      if (targetNumber is < MinNumber or > MaxNumber)
-      {
-        return GetNewProblemSet(currentLevel);
-      }
-
-      return (targetNumber, providedSelectables);
+        return (targetNumber, providedSelectables);
     }
 
     /// <summary>

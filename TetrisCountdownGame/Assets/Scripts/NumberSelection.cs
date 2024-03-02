@@ -198,9 +198,6 @@ public class ProblemSetController : MonoBehaviour, IGameStateObserver
                 }
                 break;
         }
-
-        //Delete the button that was clicked from the screen
-        Destroy(button);
     }
 
     /// <summary>
