@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 using UnityEngine.UI; // Add this line
 using TMPro;
@@ -8,32 +9,23 @@ using ProblemSetSpace;
 public class ProblemSetController : MonoBehaviour, IGameStateObserver
 {
     private ProblemSet problemSet;
-
- public Transform buttonContainer; // Add this line
-   public Transform numberButtonContainer; // Container for number buttons
+    public Transform buttonContainer; 
+    public Transform numberButtonContainer; // Container for number buttons
     public Transform operatorButtonContainer; // Container for operator buttons
-
     public TextMeshProUGUI equationContainer; // Container for the equation
-    public Button buttonPrefab; // Add this line
-
-     public TextMeshProUGUI targetNumberText; // Add this line
-
-
+    public Button buttonPrefab; 
+    public TextMeshProUGUI targetNumberText; 
 
     public List<ProblemSelectable> userSelectables = new List<ProblemSelectable>(); 
     
     private int currentLevel = 1;
-
-
     private const string _resetTag = "ResetTag";
     private const string _undoTag = "UndoTag";
 
-   void Start()
+    void Start()
     {
-
-        
         //subscribe to game state
-    GameState.Instance.Subscribe(this);
+        GameState.Instance.Subscribe(this);
     
         // add listeners to the undo and reset buttons by tag "ResetTag" and "UndoTag"
         GameObject.FindWithTag(_resetTag).GetComponent<Button>().onClick.AddListener(OnResetClicked);
@@ -54,35 +46,38 @@ public class ProblemSetController : MonoBehaviour, IGameStateObserver
        // Create a button for each number selectable
         foreach (var selectable in newProblem.Item2)
         {
-           if (selectable is Number number)
+            switch (selectable)
             {
-                Button button = Instantiate(buttonPrefab, buttonContainer.transform);
-                string buttonText = number.ToString().Split('=')[1].Trim(' ', '}'); // Add this line
-                button.GetComponentInChildren<TextMeshProUGUI>().text = buttonText; // Change this line
-
-                // Add a click listener to the button
-                button.onClick.AddListener(() => OnButtonClicked(selectable, button));
-            }
-
-            //Add the buttons to the correct container
-            else if (selectable is BinaryOperator binaryOperator)
-            {
-                Button button = Instantiate(buttonPrefab, operatorButtonContainer.transform);
-                string buttonText = "";
-                switch (binaryOperator.BinOp)
+                case Number number:
                 {
-                    case BinaryOperatorType.Addition:
-                        buttonText = "+";
-                        break;
-                    case BinaryOperatorType.Subtraction:
-                        buttonText = "-";
-                        break;
-                    // Add cases for other binary operators here
-                }
-                button.GetComponentInChildren<TextMeshProUGUI>().text = buttonText;
-                button.onClick.AddListener(() => OnButtonClicked(selectable, button));
-            }
+                    Button button = Instantiate(buttonPrefab, buttonContainer.transform);
+                    string buttonText = number.ToString().Split('=')[1].Trim(' ', '}'); // Add this line
+                    button.GetComponentInChildren<TextMeshProUGUI>().text = buttonText; // Change this line
 
+                    // Add a click listener to the button
+                    button.onClick.AddListener(() => OnButtonClicked(selectable, button));
+                    break;
+                }
+                //Add the buttons to the correct container
+                case BinaryOperator binaryOperator:
+                {
+                    Button button = Instantiate(buttonPrefab, operatorButtonContainer.transform);
+                    string buttonText = "";
+                    switch (binaryOperator.BinOp)
+                    {
+                        case BinaryOperatorType.Addition:
+                            buttonText = "+";
+                            break;
+                        case BinaryOperatorType.Subtraction:
+                            buttonText = "-";
+                            break;
+                        // Add cases for other binary operators here
+                    }
+                    button.GetComponentInChildren<TextMeshProUGUI>().text = buttonText;
+                    button.onClick.AddListener(() => OnButtonClicked(selectable, button));
+                    break;
+                }
+            }
         }
 
     }
@@ -121,6 +116,8 @@ public class ProblemSetController : MonoBehaviour, IGameStateObserver
                 }
                 break;
             // ... for other game states
+            default:
+                break;
         }
 
         
@@ -133,68 +130,78 @@ public class ProblemSetController : MonoBehaviour, IGameStateObserver
     /// <author>Sebastian Kjallgren, Tom Palin</author>
     private void AddSelectableToCanvas(ProblemSelectable selectable)
     {
-        if (selectable is Number number)
+        switch (selectable)
         {
-            Button button = Instantiate(buttonPrefab, buttonContainer.transform);
-            string buttonText = number.ToString().Split('=')[1].Trim(' ', '}');
-            button.GetComponentInChildren<TextMeshProUGUI>().text = buttonText;
-            button.onClick.AddListener(() => OnButtonClicked(selectable, button));
-        }
-        else if (selectable is BinaryOperator binaryOperator)
-        {
-            Button button = Instantiate(buttonPrefab, operatorButtonContainer.transform);
-            string buttonText = "";
-            switch (binaryOperator.BinOp)
+            case Number number:
             {
-                case BinaryOperatorType.Addition:
-                    buttonText = "+";
-                    break;
-                case BinaryOperatorType.Subtraction:
-                    buttonText = "-";
-                    break;
+                Button button = Instantiate(buttonPrefab, buttonContainer.transform);
+                string buttonText = number.ToString().Split('=')[1].Trim(' ', '}');
+                button.GetComponentInChildren<TextMeshProUGUI>().text = buttonText;
+                button.onClick.AddListener(() => OnButtonClicked(selectable, button));
+                break;
             }
-            button.GetComponentInChildren<TextMeshProUGUI>().text = buttonText;
-            button.onClick.AddListener(() => OnButtonClicked(selectable, button));
+            case BinaryOperator binaryOperator:
+            {
+                Button button = Instantiate(buttonPrefab, operatorButtonContainer.transform);
+                string buttonText = "";
+                switch (binaryOperator.BinOp)
+                {
+                    case BinaryOperatorType.Addition:
+                        buttonText = "+";
+                        break;
+                    case BinaryOperatorType.Subtraction:
+                        buttonText = "-";
+                        break;
+                }
+                button.GetComponentInChildren<TextMeshProUGUI>().text = buttonText;
+                button.onClick.AddListener(() => OnButtonClicked(selectable, button));
+                break;
+            }
         }
-        
     }
 
 
     void OnButtonClicked(ProblemSelectable selectable, Button button)
-{
-    Debug.Log("Button clicked: " + selectable);
-    userSelectables.Add(selectable);
-    
-    // if the solution is now correct we change the game state 
-    CheckSolution();
-    
-    // Add the selected button to the equation
-    if (selectable is Number number)
     {
         Debug.Log("Button clicked: " + selectable);
-        // Here you can add the code to handle the button click
-        equationContainer.text += number.Value.ToString() + " "; // Append number to the equation
+        userSelectables.Add(selectable);
+    
+        // if the solution is now correct we change the game state 
+        CheckSolution();
+
+        switch (selectable)
+        {
+            // Add the selected button to the equation
+            case Number number:
+                Debug.Log("Button clicked: " + selectable);
+                // Here you can add the code to handle the button click
+                equationContainer.text += number.Value.ToString() + " "; // Append number to the equation
+
+                //Delete the button that was clicked from the screen
+                Destroy(button.gameObject);
+                break;
+            case BinaryOperator binaryOperator:
+                switch (binaryOperator.BinOp)
+                {
+                    case BinaryOperatorType.Addition:
+                        equationContainer.text += "+ "; // Append operator to the equation
+                        break;
+                    case BinaryOperatorType.Subtraction:
+                        equationContainer.text += "- "; // Append operator to the equation
+                        break;
+                    case BinaryOperatorType.Multiplication:
+                        equationContainer.text += "* "; // Append operator to the equation
+                        break;
+                    case BinaryOperatorType.Division:
+                        equationContainer.text += "/ "; // Append operator to the equation
+                        break;
+                }
+                break;
+        }
 
         //Delete the button that was clicked from the screen
-        Destroy(button.gameObject);
+        Destroy(button);
     }
-    else if (selectable is BinaryOperator binaryOperator)
-    {
-        switch (binaryOperator.BinOp)
-        {
-            case BinaryOperatorType.Addition:
-                equationContainer.text += "+ "; // Append operator to the equation
-                break;
-            case BinaryOperatorType.Subtraction:
-                equationContainer.text += "- "; // Append operator to the equation
-                break;
-            // Add cases for other binary operators here
-        }
-    }
-
-    //Delete the button that was clicked from the screen
-    Destroy(button);
-}
 
     /// <summary>
     /// Method that is called when the undo button is clicked.
@@ -278,8 +285,6 @@ public class ProblemSetController : MonoBehaviour, IGameStateObserver
         
         userSelectables.Clear();
     }
-
-
 
     /// <summary>
     /// Checks if the user's solution is correct
