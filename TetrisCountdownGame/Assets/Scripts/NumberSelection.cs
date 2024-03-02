@@ -20,26 +20,25 @@ public class ProblemSetController : MonoBehaviour, IGameStateObserver
 
 
 
-    public List<ProblemSelectable> userSelectables = new List<ProblemSelectable>(); //
-
-
+    public List<ProblemSelectable> userSelectables = new List<ProblemSelectable>(); 
+    
     private int currentLevel = 1;
 
 
+    private const string _resetTag = "ResetTag";
+    private const string _undoTag = "UndoTag";
 
    void Start()
     {
 
         
         //subscribe to game state
-        // GameState.Instance.Subscribe(this);
-// Subscribe to the game state
     GameState.Instance.Subscribe(this);
     
-
-        //Subscribe to the game state
-        // GameState.Instance.Subscribe(this);
-        
+        // add listeners to the undo and reset buttons by tag "ResetTag" and "UndoTag"
+        GameObject.FindWithTag(_resetTag).GetComponent<Button>().onClick.AddListener(OnResetClicked);
+        GameObject.FindWithTag(_undoTag).GetComponent<Button>().onClick.AddListener(OnUndoClicked);
+    
         problemSet = new ProblemSet();
         var newProblem = problemSet.GetNewProblemSet(currentLevel);
         Debug.Log("Target Number: " + newProblem.Item1);
@@ -120,55 +119,55 @@ public class ProblemSetController : MonoBehaviour, IGameStateObserver
             // Create a button for each number selectable
             foreach (var selectable in newProblem.Item2)
             {
-                if (selectable is Number number)
-                {
-                    Button button = Instantiate(buttonPrefab, buttonContainer.transform);
-                    string buttonText = number.ToString().Split('=')[1].Trim(' ', '}');
-                    button.GetComponentInChildren<TextMeshProUGUI>().text = buttonText;
-                    button.onClick.AddListener(() => OnButtonClicked(selectable, button));
-                }
-                else if (selectable is BinaryOperator binaryOperator)
-                {
-                    Button button = Instantiate(buttonPrefab, operatorButtonContainer.transform);
-                    string buttonText = "";
-                    switch (binaryOperator.BinOp)
-                    {
-                        case BinaryOperatorType.Addition:
-                            buttonText = "+";
-                            break;
-                        case BinaryOperatorType.Subtraction:
-                            buttonText = "-";
-                            break;
-                        // Add cases for other binary operators here
-                    }
-                    button.GetComponentInChildren<TextMeshProUGUI>().text = buttonText;
-                    button.onClick.AddListener(() => OnButtonClicked(selectable, button));
-                }
+                AddSelectableToCanvas(selectable);
             }
         }
 
         
     }
 
-    
+    /// <summary>
+    /// Adds a selectable to the canvas appropriately
+    /// </summary>
+    /// <param name="selectable"></param>
+    /// <author>Sebastian Kjallgren, Tom Palin</author>
+    private void AddSelectableToCanvas(ProblemSelectable selectable)
+    {
+        if (selectable is Number number)
+        {
+            Button button = Instantiate(buttonPrefab, buttonContainer.transform);
+            string buttonText = number.ToString().Split('=')[1].Trim(' ', '}');
+            button.GetComponentInChildren<TextMeshProUGUI>().text = buttonText;
+            button.onClick.AddListener(() => OnButtonClicked(selectable, button));
+        }
+        else if (selectable is BinaryOperator binaryOperator)
+        {
+            Button button = Instantiate(buttonPrefab, operatorButtonContainer.transform);
+            string buttonText = "";
+            switch (binaryOperator.BinOp)
+            {
+                case BinaryOperatorType.Addition:
+                    buttonText = "+";
+                    break;
+                case BinaryOperatorType.Subtraction:
+                    buttonText = "-";
+                    break;
+            }
+            button.GetComponentInChildren<TextMeshProUGUI>().text = buttonText;
+            button.onClick.AddListener(() => OnButtonClicked(selectable, button));
+        }
+        
+    }
 
-    //
-
-    
 
     void OnButtonClicked(ProblemSelectable selectable, Button button)
 {
     Debug.Log("Button clicked: " + selectable);
     userSelectables.Add(selectable);
+    
+    // if the solution is now correct we change the game state 
     CheckSolution();
-
-    //Delete the button that was clicked
-
-
-
-
-
-
+    
     // Add the selected button to the equation
     if (selectable is Number number)
     {
@@ -194,10 +193,91 @@ public class ProblemSetController : MonoBehaviour, IGameStateObserver
     }
 
     //Delete the button that was clicked from the screen
-    
-    // check if the solution is correct
-    CheckSolution();
+    Destroy(button);
 }
+
+    /// <summary>
+    /// Method that is called when the undo button is clicked.
+    ///
+    /// Makes the last selectable available again
+    /// </summary>
+    /// <author>Sebastian Kjallgren</author>
+    public void OnUndoClicked()
+    {
+        if (userSelectables.Count <= 0) return;
+        
+        ProblemSelectable lastSelectable = userSelectables[^1];
+        userSelectables.RemoveAt(userSelectables.Count - 1);
+        
+        WriteSelectablesToEquationText();
+
+        // adds it back to the selectable list (if it is a number because operators do not get removed from the screen)
+        if (lastSelectable is Number)
+        {
+            AddSelectableToCanvas(lastSelectable);
+        }
+    }
+
+    /// <summary>
+    /// Overwrites the equation text to whatever the user selectables list is
+    /// </summary>
+    /// <author>Sebastian Kjallgren</author>
+    private void WriteSelectablesToEquationText()
+    {
+        equationContainer.text = "";
+        
+        foreach (ProblemSelectable selectable in userSelectables)
+        {
+            if (selectable is Number number)
+            {
+                equationContainer.text += number.Value.ToString() + " ";
+            }
+            else if (selectable is BinaryOperator binaryOperator)
+            {
+                switch (binaryOperator.BinOp)
+                {
+                    case BinaryOperatorType.Addition:
+                        equationContainer.text += "+ ";
+                        break;
+                    case BinaryOperatorType.Subtraction:
+                        equationContainer.text += "- ";
+                        break;
+                    case BinaryOperatorType.Multiplication:
+                        equationContainer.text += "* ";
+                        break;
+                    case BinaryOperatorType.Division:
+                        equationContainer.text += "/ ";
+                        break;
+                }
+            }
+            
+        }
+    }
+
+    /// <summary>
+    /// Method that is called when the reset button is clicked.
+    ///
+    /// Makes all the selectables available again and clears the equation text.
+    /// </summary>
+    /// <author>Sebastian Kjallgren</author>
+    public void OnResetClicked()
+    {
+        Debug.Log("Reset clicked");
+        
+        equationContainer.text = "";
+        
+        // add all the user selectables back to the screen and clear the user selectables list
+        foreach (ProblemSelectable selectable in userSelectables)
+        {
+            // because the operators do not get removed, we only need to add them if its a number
+            if (selectable is Number)
+            {
+                AddSelectableToCanvas(selectable);
+            }
+        }
+        
+        userSelectables.Clear();
+    }
 
 
 
@@ -225,9 +305,6 @@ public class ProblemSetController : MonoBehaviour, IGameStateObserver
             {
                 Destroy(child.gameObject);
             }
-
-            // // get mew level
-            var newProblem = problemSet.GetNewProblemSet(currentLevel);
 
         }
         else
