@@ -26,7 +26,7 @@ namespace StartGame
         public void LoadNextScene()
         {
             // Load the next scene by name
-            SceneManager.LoadScene("SampleScene");
+            SceneManager.LoadScene("MainGame");
         }
     }
 }
