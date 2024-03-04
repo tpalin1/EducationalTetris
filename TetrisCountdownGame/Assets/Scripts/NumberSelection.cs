@@ -22,6 +22,20 @@ public class ProblemSetController : MonoBehaviour, IGameStateObserver
     private const string _resetTag = "ResetTag";
     private const string _undoTag = "UndoTag";
 
+    public static ProblemSetController Instance { get; private set; }
+
+    void Awake()
+    {
+        if (Instance == null)
+        {
+            Instance = this;
+        }
+        else
+        {
+            Destroy(gameObject);
+        }
+    }
+
     void Start()
     {
         //subscribe to game state
