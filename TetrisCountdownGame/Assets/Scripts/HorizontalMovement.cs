@@ -4,7 +4,6 @@ using GameStateSpace;
 using Spawner;
 using UnityEngine;
 using UnityEngine.UIElements;
-using GameStateSpace;
 
 public class HorizontalMovement : MonoBehaviour, IGameStateObserver
 {   

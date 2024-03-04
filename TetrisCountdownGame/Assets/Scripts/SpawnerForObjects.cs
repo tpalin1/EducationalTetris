@@ -1,10 +1,11 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using GameStateSpace;
 
 namespace Spawner
 {
-  public class SpawnerForObjects : MonoBehaviour
+  public class SpawnerForObjects : MonoBehaviour, IGameStateObserver
   {
     public GameObject upcomingPanel; // assigned in the inspector
     public GameObject[] blocks;
@@ -14,9 +15,14 @@ namespace Spawner
     private bool _isFirstBlock = true;
     private const string _upcomingWidgetPanelTag = "UpcomingWidgetPanel";
 
+    public GameStateEnum gameState;
+
     // Start is called before the first frame update
     void Start()
     {
+      GameState.Instance.Subscribe(this);
+      gameState = GameState.Instance.GetGameState();
+
       SpawnBlock();
 
       // ReSharper disable once Unity.UnknownTag
@@ -29,12 +35,19 @@ namespace Spawner
 
     }
 
+    public void OnGameStateChanged(GameStateEnum gameState) {
+      this.gameState = gameState;
+    }
+
     // ReSharper disable Unity.PerformanceAnalysis
     /// <summary>
     /// Used when a new block should be spawned. Updates the current block and upcoming block.
     /// </summary>
     public void SpawnBlock()
     {
+      if (gameState == GameStateEnum.TetrisPlayableButPaused || gameState == GameStateEnum.CountdownBeingSolvedButPaused)
+        return;
+
       currentBlock = _isFirstBlock ? GetRandomBlock() : upcomingBlock;
       _isFirstBlock = false;
       upcomingBlock = GetRandomBlock();
