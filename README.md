@@ -51,48 +51,29 @@ For our lastest backlog, see the [Jira](https://softwaremanagement7.atlassian.ne
 
 ## Contributors/Team
 
-<div style="text-align: center;">
-    <div style="display: inline-block; margin: 10px;">
-        <img src="Images/Contributors/SebastianK.jpeg" style="width: 100px; height: 100px; border-radius: 50%;">
-        <div>Sebastian K.</div>
-        <div><a href="mailto:psysk9@nottingham.ac.uk">psysk9</a></div>
-        <div>Scrum Master</div>
-        <div>Developer</div>
-    </div>
-    <div style="display: inline-block; margin: 10px;">
-        <div style="width: 100px; height: 100px; border-radius: 50%; background-color: #f0f0f0; text-align: center; line-height: 100px; margin-bottom: 5px;">TP</div>
-        <div>Thomas P.</div>
-        <div><a href="mailto:psytp4@nottingham.ac.uk">psytp4</a></div>
-        <div>Git Officer</div>
-        <div>Developer</div>
-    </div>
-    <div style="display: inline-block; margin: 10px; vertical-align: top;">
-        <div style="width: 100px; height: 100px; border-radius: 50%; background-color: #f0f0f0; text-align: center; line-height: 100px; margin-bottom: 5px;">SJ</div>
-        <div>Shalini J.</div>
-        <div><a href="mailto:psxsj11@nottingham.ac.uk">psxsj11</a></div>
-        <div>Head of Testing</div>
-        <div>Developer</div>
-    </div><div style="display: inline-block; margin: 10px; vertical-align: top;">
-        <div style="width: 100px; height: 100px; border-radius: 50%; background-color: #f0f0f0; text-align: center; line-height: 100px; margin-bottom: 5px;">SS</div>
-        <div>Satyanshu S.</div>
-        <div><a href="mailto:psxss40@nottingham.ac.uk">psxss40</a></div>
-        <div>Admin</div>
-        <div>Developer</div>
-    </div>  
-    <div style="display: inline-block; margin: 10px;">
-        <div style="width: 100px; height: 100px; border-radius: 50%; background-color: #f0f0f0; text-align: center; line-height: 100px; margin-bottom: 5px;">NZ</div>
-        <div>Nora Z.</div>
-        <div><a href="mailto:alyxz85@nottingham.ac.uk">alyxz85</a></div>
-        <div>UI/UX Lead</div>
-        <div>Developer</div>
-    </div><div style="display: inline-block; margin: 10px;">
-        <div style="width: 100px; height: 100px; border-radius: 50%; background-color: #f0f0f0; text-align: center; line-height: 100px; margin-bottom: 5px;">XL</div>
-        <div>Xin L.</div>
-        <div><a href="mailto:alyxl95@nottingham.ac.uk">alyxl95</a></div>
-        <div>QA Officer</div>
-        <div>Developer</div>
-    </div>
-</div>
+### Sebastian K. 
+[psysk9@nottingham.ac.uk](mailto:psysk9@nottingham.ac.uk)  
+Scrum Master, Developer
+
+### Thomas P.
+[psytp4@nottingham.ac.uk](mailto:psytp4@nottingham.ac.uk)  
+Git Officer, Developer
+
+### Shalini J.
+[psxsj11@nottingham.ac.uk](mailto:psxsj11@nottingham.ac.uk)  
+Head of Testing, Developer
+
+### Satyanshu S. 
+[psxss40@nottingham.ac.uk](mailto:psxss40@nottingham.ac.uk)  
+Admin, Developer
+
+### Nora Z.
+[alyxz85@nottingham.ac.uk](mailto:alyxz85@nottingham.ac.uk)  
+UI/UX Lead, Developer
+
+### Xin L.
+[alyxl95@nottingham.ac.uk](mailto:alyxl95@nottingham.ac.uk)  
+QA Officer, Developer
 
 ## Additional Resources and Documents
 
