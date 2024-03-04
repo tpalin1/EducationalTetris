@@ -51,29 +51,44 @@ For our lastest backlog, see the [Jira](https://softwaremanagement7.atlassian.ne
 
 ## Contributors/Team
 
-### Sebastian K. 
-[psysk9@nottingham.ac.uk](mailto:psysk9@nottingham.ac.uk)  
-Scrum Master, Developer
 
-### Thomas P.
-[psytp4@nottingham.ac.uk](mailto:psytp4@nottingham.ac.uk)  
-Git Officer, Developer
-
-### Shalini J.
-[psxsj11@nottingham.ac.uk](mailto:psxsj11@nottingham.ac.uk)  
-Head of Testing, Developer
-
-### Satyanshu S. 
-[psxss40@nottingham.ac.uk](mailto:psxss40@nottingham.ac.uk)  
-Admin, Developer
-
-### Nora Z.
-[alyxz85@nottingham.ac.uk](mailto:alyxz85@nottingham.ac.uk)  
-UI/UX Lead, Developer
-
-### Xin L.
-[alyxl95@nottingham.ac.uk](mailto:alyxl95@nottingham.ac.uk)  
-QA Officer, Developer
+<table border="0">
+<tr>
+    <td align="center" valign="middle">
+        <!--<img src="Images/Contributors/SebastianK.jpeg" alt="SK" width="100" height="100"><br>-->
+        Sebastian K.<br>
+        <a href="mailto:psysk9@nottingham.ac.uk">psysk9@nottingham.ac.uk</a><br>
+        Scrum Master, Developer
+    </td>
+    <td align="center" valign="middle">
+        Thomas P.<br>
+        <a href="mailto:psytp4@nottingham.ac.uk">psytp4@nottingham.ac.uk</a><br>
+        Git Officer, Developer
+    </td>
+    <td align="center" valign="middle">
+        Shalini J.<br>
+        <a href="mailto:psxsj11@nottingham.ac.uk">psxsj11@nottingham.ac.uk</a><br>
+        Head of Testing, Developer
+    </td>
+</tr>
+<tr>
+    <td align="center" valign="middle">
+        Satyanshu S.<br>
+        <a href="mailto:psxss40@nottingham.ac.uk">psxss40@nottingham.ac.uk</a><br>
+        Admin, Developer
+    </td>
+    <td align="center" valign="middle">
+        Nora Z.<br>
+        <a href="mailto:alyxz85@nottingham.ac.uk">alyxz85@nottingham.ac.uk</a><br>
+        UI/UX Lead, Developer
+    </td>
+    <td align="center" valign="middle">
+        Xin L.<br>
+        <a href="mailto:alyxl95@nottingham.ac.uk">alyxl95@nottingham.ac.uk</a><br>
+        QA Officer, Developer
+    </td>
+</tr>
+</table>
 
 ## Additional Resources and Documents
 
