@@ -469,7 +469,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 798205232}
-  - component: {fileID: 798205231}
+  - component: {fileID: 798205233}
   m_Layer: 0
   m_Name: Spawner
   m_TagString: Untagged
@@ -477,28 +477,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!114 &798205231
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 798205230}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 0463f45556d60684eba5fc1abba51ada, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  upcomingPanel: {fileID: 0}
-  blocks:
-  - {fileID: 8621303338742230696, guid: f522d141da13a394ca75a7c4bf892a31, type: 3}
-  - {fileID: 7983344986378119386, guid: 4e0c94b7cb57c2b4eba24549b394d8a9, type: 3}
-  - {fileID: 4076633247344035393, guid: f6739eb754889fe46bdf85b9dc408951, type: 3}
-  - {fileID: 1395260234658850115, guid: 25fae5758ac8439489751401c3bc9474, type: 3}
-  isFalling: 1
-  upcomingBlock: {fileID: 0}
-  currentBlock: {fileID: 0}
-  gameState: 0
 --- !u!4 &798205232
 Transform:
   m_ObjectHideFlags: 0
@@ -514,6 +492,28 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &798205233
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 798205230}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0345be8ab0e4e4a4fb4acaa60a94b3af, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  upcomingPanel: {fileID: 0}
+  blocks:
+  - {fileID: 8621303338742230696, guid: f522d141da13a394ca75a7c4bf892a31, type: 3}
+  - {fileID: 7983344986378119386, guid: 4e0c94b7cb57c2b4eba24549b394d8a9, type: 3}
+  - {fileID: 4076633247344035393, guid: f6739eb754889fe46bdf85b9dc408951, type: 3}
+  - {fileID: 1395260234658850115, guid: 25fae5758ac8439489751401c3bc9474, type: 3}
+  isFalling: 1
+  upcomingBlock: {fileID: 0}
+  currentBlock: {fileID: 0}
+  gameState: 0
 --- !u!1 &847744716
 GameObject:
   m_ObjectHideFlags: 0
@@ -1519,8 +1519,8 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1494873866}
-  - component: {fileID: 1494873865}
   - component: {fileID: 1494873867}
+  - component: {fileID: 1494873868}
   m_Layer: 0
   m_Name: numberSelectorObject
   m_TagString: Untagged
@@ -1528,24 +1528,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!114 &1494873865
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1494873864}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b2207efd4ffbfdb48bcd2b6c0cab6abf, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  buttonContainer: {fileID: 1611107247}
-  numberButtonContainer: {fileID: 1611107247}
-  operatorButtonContainer: {fileID: 1296132935}
-  equationContainer: {fileID: 1211299856}
-  buttonPrefab: {fileID: 7416177431034881043, guid: 9319b8d192ebbea49839b1c653cc78be, type: 3}
-  targetNumberText: {fileID: 1390312047}
 --- !u!4 &1494873866
 Transform:
   m_ObjectHideFlags: 0
@@ -1570,7 +1552,25 @@ MonoBehaviour:
   m_GameObject: {fileID: 1494873864}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5b1d9328a047c4b4a915e9557b87d5aa, type: 3}
+  m_Script: {fileID: 11500000, guid: c605a9be6b7656b4eb4f29517b286301, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  buttonContainer: {fileID: 1611107247}
+  numberButtonContainer: {fileID: 1611107247}
+  operatorButtonContainer: {fileID: 1296132935}
+  equationContainer: {fileID: 1211299856}
+  buttonPrefab: {fileID: 7416177431034881043, guid: 9319b8d192ebbea49839b1c653cc78be, type: 3}
+  targetNumberText: {fileID: 1390312047}
+--- !u!114 &1494873868
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1494873864}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c4322e266e2e00845af4b229ef75083d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   pauseMenu: {fileID: 0}
