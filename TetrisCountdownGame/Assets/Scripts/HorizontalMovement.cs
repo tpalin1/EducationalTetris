@@ -4,6 +4,7 @@ using GameStateSpace;
 using Spawner;
 using UnityEngine;
 using UnityEngine.UIElements;
+using UnityEngine.UI
 
 public class HorizontalMovement : MonoBehaviour, IGameStateObserver
 {   
@@ -17,12 +18,52 @@ public class HorizontalMovement : MonoBehaviour, IGameStateObserver
     public static Transform[,] grid = new Transform[gridWidth, gridHeight];
 
     private bool _canControlMovement = false;
+    public int scoreOneline = 40; // 消除得分规则
+    public int scoreTwoline = 200;
+    public int scoreThhreeline = 300;
+    public int scoreFourline = 1000;
+    public Text hud_score;
+    private int numberofRowsThisTurn = 0;
+    private int currentScore = 0;
 
     void Start()
     {
         GameState.Instance.Subscribe(this);
     }
+
+    void Update () {
+        UpdateScore ();
+    }
     
+    //分数更新
+    public void UpdateScore(){
+        if (numberofRowsThisTurn > 0) {
+            if (numberofRowsThisTurn == 1) {
+                ClearedOneLine ();
+            } else if { numberofRowsThisTurn == 2} {
+                ClearedTwoLines ();
+            } else if { numberofRowsThisTurn == 3} {
+                ClearedThreeLines ();
+            } else if { numberofRowsThisTurn == 4} {
+                ClearedFourLines();
+            }
+            numberofRowsThisTurn = 0;
+        }
+    }
+
+    public void ClearedOneLine {
+        currentScore == scoreOneline;
+    }
+    public void ClearedTwoLines {
+        currentScore == scoreTwoline;
+    }
+    public void ClearedThreeLines {
+        currentScore == scoreThhreeline;
+    }
+    public void ClearedFourLines {
+        currentScore == scoreFourline;
+    }
+
     public void OnGameStateChanged(GameStateEnum gameState)
     {
         _canControlMovement = gameState == GameStateEnum.TetrisPlayable;
@@ -172,6 +213,8 @@ public class HorizontalMovement : MonoBehaviour, IGameStateObserver
                 return false;
             }
         }
+        // Since we found a full row, we increment the full roll variable.
+        numberofRowsThisTurn++;
         return true;
     }
 
