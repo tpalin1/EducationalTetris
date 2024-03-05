@@ -25,12 +25,12 @@ public class HorizontalMovement : MonoBehaviour, IGameStateObserver
     public int scoreTwoline = 200;
     public int scoreThreeline = 300; 
     public int scoreFourline = 1000;
-    public Text hud_score;
+    
+    public TextMeshProUGUI hud_score;
     private int numberofRowsThisTurn = 0;
     private bool _canControlMovement = false;
 
-    public Text Hud_score { get => hud_score; set => hud_score = value; }
-
+    public TextMeshProUGUI Hud_score { get => hud_score; set => hud_score = value; }
     public bool CheckIsAboveGrid(Transform block)
     {
         for (int x = 0; x < gridWidth; ++x)
