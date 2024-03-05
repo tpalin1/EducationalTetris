@@ -1,4 +1,3 @@
-
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -6,11 +5,11 @@ using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 
-namespace StartGame
-{
-    public class StartGameController : MonoBehaviour
+namespace StartGame{
+
+ public class StartGameScript : MonoBehaviour
     {
-        public Button StartGameButton;
+        public Button startGameButton;
 
         public void Start()
 
@@ -21,10 +20,10 @@ namespace StartGame
             
             Debug.Log("let's goooo");
             // Ensure the button is assigned before using it
-            if (StartGameButton != null)
+            if (startGameButton != null)
             {
                 // Attach the click event
-                StartGameButton.onClick.AddListener(LoadNextScene);
+                startGameButton.onClick.AddListener(LoadNextScene);
             }
             else
             {
@@ -40,5 +39,4 @@ namespace StartGame
         }
     }
 }
-
 
