@@ -5,6 +5,9 @@ using Spawner;
 using UnityEngine;
 using UnityEngine.UIElements;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
+using TMPro;
+
 
 public class HorizontalMovement : MonoBehaviour, IGameStateObserver
 {   
@@ -16,15 +19,35 @@ public class HorizontalMovement : MonoBehaviour, IGameStateObserver
     public static int gridWidth = 10;
     public static int gridHeight = 20;
     public static Transform[,] grid = new Transform[gridWidth, gridHeight];
-    public Text hud_score;
+   
     private int currentScore = 0;
-    public int scoreOneline = 40; // 消除得分规则
+    public int scoreOneline = 40; // scoring rules
     public int scoreTwoline = 200;
     public int scoreThreeline = 300; 
     public int scoreFourline = 1000;
+    public Text hud_score;
     private int numberofRowsThisTurn = 0;
     private bool _canControlMovement = false;
-    
+
+    public Text Hud_score { get => hud_score; set => hud_score = value; }
+
+    public bool CheckIsAboveGrid(Transform block)
+    {
+        for (int x = 0; x < gridWidth; ++x)
+        {
+            foreach (Transform child in block)
+            {
+                Vector2 pos = new Vector2(Mathf.RoundToInt(child.position.x), Mathf.RoundToInt(child.position.y));
+
+                if (pos.y > gridHeight - 1)
+                {
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+
 
     void Start()
     {
@@ -33,9 +56,9 @@ public class HorizontalMovement : MonoBehaviour, IGameStateObserver
     
     public void UpdateUI()
     {
-        hud_score.text = currentScore.ToString();
+        Hud_score.text = currentScore.ToString();
     }
-    //分数更新
+    // score update
     public void UpdateScore()
     {
         if (numberofRowsThisTurn > 0)
@@ -60,7 +83,7 @@ public class HorizontalMovement : MonoBehaviour, IGameStateObserver
         }
     }
 
-    //分数方法的具体实现
+    // methods for scoring
     public void ClearedOneLine()
     {
         currentScore += scoreOneline;
@@ -83,13 +106,15 @@ public class HorizontalMovement : MonoBehaviour, IGameStateObserver
 
     public void OnGameStateChanged(GameStateEnum gameState)
     {
-        _canControlMovement = gameState == GameStateEnum.TetrisPlayable;
-    }
+        if (gameState == GameStateEnum.CountdownBeingSolved)
+        {
+            GameState.Instance.SetGameState(GameStateEnum.TetrisPlayable);
+        }
+    }    
 
     void Update()
     {
         Debug.Log("This is the grid:");
-
         for (int y = 0; y < gridHeight; y++)
         {
             string row = "";
@@ -106,66 +131,76 @@ public class HorizontalMovement : MonoBehaviour, IGameStateObserver
         timer += Time.deltaTime;
         fallSpeed = 1.0f;
 
-        if (_canControlMovement && Input.GetKeyDown(KeyCode.DownArrow))
-        {
-            fallSpeed = 10.0f;
-        }
 
-        if (Time.time - previousTime > (Input.GetKey(KeyCode.DownArrow) ? fallSpeed / 10 : fallSpeed))
+        if (_canControlMovement)
         {
-            transform.position += new Vector3(0, -1, 0);
-            if (!validMove())
+            if (Input.GetKeyDown(KeyCode.DownArrow))
             {
-                transform.position -= new Vector3(0, -1, 0);
-                AddToGrid();
-                checkForLine();
-
-                if (IsBlockAtTop())
-                {
-                    GameState.Instance.SetGameState(GameStateEnum.TetrisGameOver);
-                    return;
-                }
-
-                this.enabled = false;
-                FindObjectOfType<SpawnerForObjects>().SpawnBlock();
-                if (_canControlMovement == false)
-                {
-                    GameState.Instance.SetGameState(GameStateEnum.TetrisGameUnsolved);
-                }
-                GameState.Instance.SetGameState(GameStateEnum.CountdownBeingSolved);
+                fallSpeed = 10.0f;
             }
-            previousTime = Time.time;
-        }
 
-        if (!_canControlMovement)
-        {
-            return;
-        }
-        
-        if (Input.GetKeyDown(KeyCode.LeftArrow))
-        {
-            transform.position += new Vector3(-1, 0, 0);
-            if(!validMove())
+            if (Time.time - previousTime > (Input.GetKey(KeyCode.DownArrow) ? fallSpeed / 10 : fallSpeed))
             {
-                transform.position -= new Vector3(-1, 0, 0);
+                transform.position += new Vector3(0, -1, 0);
+                if (!validMove())
+                {
+                    transform.position -= new Vector3(0, -1, 0);
+                    AddToGrid();
+                    checkForLine();
+
+                    if (IsBlockAtTop())
+                    {
+                        GameState.Instance.SetGameState(GameStateEnum.TetrisGameOver);
+                        return;
+                    }
+
+                    this.enabled = false;
+                    FindObjectOfType<SpawnerForObjects>().SpawnBlock();
+                    if (_canControlMovement == false)
+                    {
+                        GameState.Instance.SetGameState(GameStateEnum.TetrisGameUnsolved);
+                    }
+                    GameState.Instance.SetGameState(GameStateEnum.CountdownBeingSolved);
+                }
+                previousTime = Time.time;
             }
-        }
-        
-        else if (Input.GetKeyDown(KeyCode.RightArrow))
-        {
-            transform.position += new Vector3(1, 0, 0);
-            if(!validMove()){
-                transform.position -= new Vector3(1, 0, 0);
-            }
-        }
-        else if (Input.GetKeyDown(KeyCode.UpArrow))
-        {
-            Rotate();
         }
 
-        UpdateScore ();
-        UpdateUI ();
+
+        if (_canControlMovement)
+        {
+            if (Input.GetKeyDown(KeyCode.LeftArrow))
+            {
+                transform.position += new Vector3(-1, 0, 0);
+                if (!validMove())
+                {
+                    transform.position -= new Vector3(-1, 0, 0);
+                }
+            }
+            else if (Input.GetKeyDown(KeyCode.RightArrow))
+            {
+                transform.position += new Vector3(1, 0, 0);
+                if (!validMove())
+                {
+                    transform.position -= new Vector3(1, 0, 0);
+                }
+            }
+            else if (Input.GetKeyDown(KeyCode.UpArrow))
+            {
+                Rotate();
+            }
+        }
+
+        UpdateScore();
+        UpdateUI();
+
+        // Check if the squares are outside the grid
+        if (CheckIsAboveGrid(transform))
+        {
+            FindObjectOfType<HorizontalMovement>().GameOver();
+        }
     }
+
 
     void Rotate()
     {
@@ -262,4 +297,24 @@ public class HorizontalMovement : MonoBehaviour, IGameStateObserver
             }
         }
     }
+
+    bool IsBlockAtTop()
+    {
+        foreach (Transform child in transform)
+        {
+            Vector3 pos = child.position;
+            int roundedY = Mathf.RoundToInt(pos.y);
+
+            if (roundedY >= gridHeight)
+            {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public void GameOver()
+    {
+        SceneManager.LoadScene("GameOver"); 
+    }  
 }
