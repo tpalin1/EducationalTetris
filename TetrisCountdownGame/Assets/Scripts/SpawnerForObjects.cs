@@ -80,17 +80,19 @@ namespace Spawner
             }
 
             // Remove the previous upcoming block
-            try
+            GameObject previousBlock = upcomingPanel.transform.GetChild(0).gameObject;
+            if (previousBlock != null)
             {
-                Destroy(upcomingPanel.transform.GetChild(0).gameObject);
+                Destroy(previousBlock);
             }
-            catch (UnityException)
+            else
             {
-                Debug.LogError("error: There was no previous upcoming block.");
+                Debug.LogWarning("warning: Previous upcoming block is null.");
             }
 
             // Add the upcoming block to the panel
             Instantiate(upcomingBlock, upcomingPanel.transform.position, Quaternion.identity, upcomingPanel.transform);
         }
+
     }
 }
