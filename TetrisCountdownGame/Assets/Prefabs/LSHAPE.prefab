@@ -301,7 +301,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   fallSpeed: 1
-  rotationPoint: {x: 0, y: 0, z: 0}
+  rotationPoint: {x: 1, y: 0, z: 0}
 --- !u!1 &9152222737565245273
 GameObject:
   m_ObjectHideFlags: 0
