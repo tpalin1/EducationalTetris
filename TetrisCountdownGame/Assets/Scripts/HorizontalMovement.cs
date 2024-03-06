@@ -4,13 +4,7 @@ using GameStateSpace;
 using Spawner;
 using UnityEngine;
 using UnityEngine.UIElements;
-
-using TMPro;
-using UnityEngine.SceneManagement;
-
-
-
-
+using GameStateSpace;
 
 public class HorizontalMovement : MonoBehaviour, IGameStateObserver
 {   
