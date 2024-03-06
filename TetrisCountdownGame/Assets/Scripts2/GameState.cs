@@ -41,23 +41,36 @@ namespace GameStateSpace
         private static GameState _instance;
         private GameStateEnum _gameState = GameStateEnum.GameNotStarted;
         private List<IGameStateObserver> _observers = new List<IGameStateObserver>();
-       public static GameState Instance
-{
-    get
-    {
-        if (_instance == null)
+
+        // Define gridWidth and gridHeight
+        private const int gridWidth = 10;
+        private const int gridHeight = 20;
+
+        // Define grid array
+        private Transform[,] grid = new Transform[gridWidth, gridHeight];
+
+        //Score
+        public int currentScore = 0;
+
+        public static GameState Instance
         {
-            _instance = FindObjectOfType<GameState>();
-            if (_instance == null)
+            get
             {
-                GameObject gameObject = new GameObject();
-                _instance = gameObject.AddComponent<GameState>();
-                DontDestroyOnLoad(gameObject);
+                if (_instance == null)
+                {
+                    _instance = FindObjectOfType<GameState>();
+                    if (_instance == null)
+                    {
+                        GameObject gameObject = new GameObject();
+                        _instance = gameObject.AddComponent<GameState>();
+                        DontDestroyOnLoad(gameObject);
+                    }
+                }
+                return _instance;
             }
         }
-        return _instance;
-    }
-}
+
+
         
         public void Awake()
         {
@@ -79,6 +92,16 @@ namespace GameStateSpace
         public GameStateEnum GetGameState()
         {
             return _gameState;
+        }
+
+        public void SetScore(int score)
+        {
+            currentScore = score;
+        }
+
+        public int GetScore()
+        {
+            return currentScore;
         }
 
         /// <summary>
@@ -124,6 +147,19 @@ namespace GameStateSpace
             }
         }
 
+        public bool IsBlockAtTop()
+        {
+            // Check if the top row of the grid contains any blocks
+            for (int x = 0; x < gridWidth; x++)
+            {
+                if (grid[x, gridHeight - 1] != null)
+                {
+                    // If a block is found in the top row, return true
+                    return true;
+                }
+            }
+            // If no block is found in the top row, return false
+            return false;
+        }
     }
-
 }
