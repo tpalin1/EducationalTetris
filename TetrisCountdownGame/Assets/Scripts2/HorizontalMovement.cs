@@ -4,6 +4,8 @@ using GameStateSpace;
 using Spawner;
 using UnityEngine;
 using UnityEngine.UIElements;
+using UnityEngine.SceneManagement;
+using TMPro;
 
 public class HorizontalMovement : MonoBehaviour, IGameStateObserver
 {   
@@ -95,12 +97,13 @@ public class HorizontalMovement : MonoBehaviour, IGameStateObserver
 
 
         //Spawn a new block when the timer reaches 10 seconds
+        UpdateScore();
         
         // // If _canControlMovement is false, we don't want to allow the player to move the block
-        // if (!_canControlMovement)
-        // {
-        //     return;
-        // }
+        if (!_canControlMovement)
+        {
+            return;
+        }
         
         //If they move arrow left, move the blocks left 1 space
         if (Input.GetKeyDown(KeyCode.LeftArrow))
@@ -122,7 +125,6 @@ public class HorizontalMovement : MonoBehaviour, IGameStateObserver
         {
             Rotate();
         }
-        UpdateScore();
     }
     
 

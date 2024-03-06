@@ -1,6 +1,9 @@
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
+
+using GameStateSpace;
+using TMPro;
 namespace GameOver
 {
     public class GameOverController : MonoBehaviour
@@ -8,8 +11,14 @@ namespace GameOver
         public UnityEngine.UI.Button RestartButton;
         public UnityEngine.UI.Button QuitButton;
 
+        //Show score
+        public TMP_Text scoreText;
+
         void Start()
         {
+
+
+            scoreText.text = "Your score was " +GameState.Instance.GetScore().ToString();
             // Ensure the buttons are assigned before using them
             if (RestartButton != null)
             {
@@ -35,6 +44,7 @@ namespace GameOver
         public void RestartGame()
         {
             // Restart the game by loading the MainGame scene
+            GameState.Instance.SetGameState(GameStateEnum.GameNotStarted);
             SceneManager.LoadScene("MainGame");
         }
 

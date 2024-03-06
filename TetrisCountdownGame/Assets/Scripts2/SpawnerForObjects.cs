@@ -48,6 +48,7 @@ namespace Spawner
       if (gameState == GameStateEnum.TetrisPlayableButPaused || gameState == GameStateEnum.CountdownBeingSolvedButPaused)
         return;
 
+
       currentBlock = _isFirstBlock ? GetRandomBlock() : upcomingBlock;
       _isFirstBlock = false;
       upcomingBlock = GetRandomBlock();
