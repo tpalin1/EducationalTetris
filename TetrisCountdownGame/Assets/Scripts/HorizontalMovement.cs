@@ -6,6 +6,7 @@ using UnityEngine;
 using UnityEngine.UIElements;
 
 using TMPro;
+using UnityEngine.SceneManagement;
 
 
 
@@ -77,6 +78,15 @@ public class HorizontalMovement : MonoBehaviour, IGameStateObserver
                 AddToGrid();
                 checkForLine();
 
+                //Check if the block is reached the top
+                
+                if(isAbove()){
+
+                    
+                    GameOver();
+
+                }
+
                 // when the block has fallen and landed, spawn a new one and update game state to not playable
                 this.enabled = false;
                 FindObjectOfType<SpawnerForObjects>().SpawnBlock();  
@@ -142,20 +152,17 @@ public class HorizontalMovement : MonoBehaviour, IGameStateObserver
         int roundedY = Mathf.RoundToInt(child.position.y);
 
         // Debug logs for debugging
-        Debug.Log("Child position: " + child.position);
-        Debug.Log("Rounded position: (" + roundedX + ", " + roundedY + ")");
+    
 
         // Check if the block is within the grid boundaries
         if (roundedX < 0 || roundedX >= gridWidth || roundedY < 0 || roundedY >= gridHeight)
         {
-            Debug.Log("Block is out of bounds");
             return false;
         }
 
         // Check if the grid cell is already occupied
         if (grid[roundedX, roundedY] != null)
         {
-            Debug.Log("Grid cell (" + roundedX + ", " + roundedY + ") is occupied");
             return false;
         }
     }
@@ -171,7 +178,6 @@ public class HorizontalMovement : MonoBehaviour, IGameStateObserver
             int roundedY = Mathf.RoundToInt(children.transform.position.y);
             grid[roundedX, roundedY] = children;
 
-            Debug.Log("This is where it got added to the grid"+ roundedX + " " + roundedY);
         }
     }
             
@@ -194,6 +200,24 @@ public class HorizontalMovement : MonoBehaviour, IGameStateObserver
         }
         return true;
     }
+
+
+
+    bool isAbove(){
+        for(int i = 0; i < gridWidth; i++){
+            if(grid[i, gridHeight-2] != null) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+
+    void GameOver(){
+        Debug.Log("Game Over");
+        SceneManager.LoadScene("GameOver Scene");
+    }
+
 
     void DeleteLine(int i){
         for(int j = 0; j < gridWidth; j++){
@@ -236,7 +260,6 @@ public class HorizontalMovement : MonoBehaviour, IGameStateObserver
 
         public void UpdateUI()
     {
-        Debug.Log("This is the current score" + currentScore);
         scoreText.text = currentScore.ToString();
 
     }
