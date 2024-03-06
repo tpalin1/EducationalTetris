@@ -40,13 +40,17 @@ public class HorizontalMovement : MonoBehaviour, IGameStateObserver
     {
         //subscribe to game state
         GameState.Instance.Subscribe(this);
-        
+
     }
     
     public void OnGameStateChanged(GameStateEnum gameState)
     {
+        
+        
         _canControlMovement = gameState == GameStateEnum.TetrisPlayable;
-    }
+
+        }
+    
 
     // Update is called once per frame
     void Update()
@@ -67,6 +71,7 @@ public class HorizontalMovement : MonoBehaviour, IGameStateObserver
 
         if(Time.time - previousTime > (Input.GetKey(KeyCode.DownArrow)? fallSpeed /10 : fallSpeed)){
             transform.position += new Vector3(0, -1, 0);
+            Debug.Log("Game state is " + GameState.Instance.GetGameState());
             if(!validMove()){
 
                 transform.position -= new Vector3(0,-1, 0);
@@ -77,7 +82,9 @@ public class HorizontalMovement : MonoBehaviour, IGameStateObserver
                 
                 if(isAbove()){
 
-                    
+
+                    //Unsubscribe
+                    GameState.Instance.UnSubscribe(this);
                     GameOver();
 
                 }
@@ -85,11 +92,16 @@ public class HorizontalMovement : MonoBehaviour, IGameStateObserver
                 // when the block has fallen and landed, spawn a new one and update game state to not playable
                 this.enabled = false;
                 FindObjectOfType<SpawnerForObjects>().SpawnBlock();  
+
                 if(_canControlMovement == false) {
                     GameState.Instance.SetGameState(GameStateEnum.TetrisGameUnsolved);
-                    
+                Debug.Log("You are here now, NOOOOO!" + GameState.Instance.GetGameState());
+
                 }
                 GameState.Instance.SetGameState(GameStateEnum.CountdownBeingSolved);              
+                Debug.Log("You are here now, hooray!" + GameState.Instance.GetGameState());
+
+                
             }
             previousTime = Time.time;
         }
@@ -210,6 +222,7 @@ public class HorizontalMovement : MonoBehaviour, IGameStateObserver
 
     void GameOver(){
         Debug.Log("Game Over");
+        GameState.Instance.SetGameState(GameStateEnum.GameNotStarted);
         SceneManager.LoadScene("GameOver Scene");
     }
 

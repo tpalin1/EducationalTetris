@@ -23,6 +23,7 @@ namespace StartGame
             // Ensure the button is assigned before using it
             if (StartGameButton != null)
             {
+                
                 // Attach the click event
                 StartGameButton.onClick.AddListener(LoadNextScene);
             }

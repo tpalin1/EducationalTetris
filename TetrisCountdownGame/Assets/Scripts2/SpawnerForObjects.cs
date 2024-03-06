@@ -37,6 +37,8 @@ namespace Spawner
 
     public void OnGameStateChanged(GameStateEnum gameState) {
       this.gameState = gameState;
+
+      
     }
 
     // ReSharper disable Unity.PerformanceAnalysis
