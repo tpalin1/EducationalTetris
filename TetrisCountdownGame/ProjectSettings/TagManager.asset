@@ -6,6 +6,10 @@ TagManager:
   tags:
   - Block
   - UpcomingWidgetPanel
+  - UndoTag
+  - ResetTag
+  - Selectables
+  - StartGameTag
   layers:
   - Default
   - TransparentFX

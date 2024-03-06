@@ -1,16 +1,25 @@
+
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
-namespace StartGameTest
+
+namespace StartGame
 {
-    public class StartGame : MonoBehaviour
+    public class StartGameController : MonoBehaviour
     {
-        public UnityEngine.UI.Button StartGameButton;
+        public Button StartGameButton;
 
         public void Start()
+
         {
+
+
+            //Get the startGameButton
+            
+            Debug.Log("let's goooo");
             // Ensure the button is assigned before using it
             if (StartGameButton != null)
             {
@@ -25,10 +34,11 @@ namespace StartGameTest
 
         public void LoadNextScene()
         {
+            Debug.Log("Loading next scene...");
             // Load the next scene by name
             SceneManager.LoadScene("MainGame");
         }
-
-        
     }
 }
+
+
