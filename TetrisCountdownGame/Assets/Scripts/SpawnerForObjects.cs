@@ -79,20 +79,16 @@ namespace Spawner
                 return;
             }
 
-            // Remove the previous upcoming block
-            GameObject previousBlock = upcomingPanel.transform.GetChild(0).gameObject;
-            if (previousBlock != null)
+            if (upcomingPanel.transform.childCount > 0)
             {
-                Destroy(previousBlock);
+                Destroy(upcomingPanel.transform.GetChild(0).gameObject);
             }
             else
             {
                 Debug.LogWarning("warning: Previous upcoming block is null.");
             }
 
-            // Add the upcoming block to the panel
             Instantiate(upcomingBlock, upcomingPanel.transform.position, Quaternion.identity, upcomingPanel.transform);
         }
-
     }
 }

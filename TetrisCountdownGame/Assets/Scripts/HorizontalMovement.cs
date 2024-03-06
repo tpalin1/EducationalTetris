@@ -315,6 +315,6 @@ public class HorizontalMovement : MonoBehaviour, IGameStateObserver
 
     public void GameOver()
     {
-        SceneManager.LoadScene("GameOver"); 
+        SceneManager.LoadScene("GameOver Scene"); 
     }  
 }
