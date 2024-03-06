@@ -20,6 +20,7 @@ public class HorizontalMovement : MonoBehaviour, IGameStateObserver
      public static Transform[,] grid = new Transform[gridWidth, gridHeight];
 
      private bool _canControlMovement = false;
+     private bool _isPaused = false;
 
     public int currentScore = 0;
 
@@ -45,17 +46,17 @@ public class HorizontalMovement : MonoBehaviour, IGameStateObserver
     
     public void OnGameStateChanged(GameStateEnum gameState)
     {
-        
-        
         _canControlMovement = gameState == GameStateEnum.TetrisPlayable;
-
-        }
+        
+        _isPaused = gameState == GameStateEnum.TetrisPlayableButPaused || gameState == 
+            GameStateEnum.CountdownBeingSolvedButPaused;
+    }
     
 
     // Update is called once per frame
     void Update()
     {
-
+       if (_isPaused) return;
 
         scoreText.text = GameState.Instance.GetScore().ToString();
         timer += Time.deltaTime;
@@ -65,7 +66,6 @@ public class HorizontalMovement : MonoBehaviour, IGameStateObserver
        if(_canControlMovement && Input.GetKeyDown(KeyCode.DownArrow)){
            fallSpeed = 10.0f;   
        }
-        
 
         
 

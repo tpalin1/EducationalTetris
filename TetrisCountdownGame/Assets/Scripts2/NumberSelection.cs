@@ -21,41 +21,32 @@ public class ProblemSetController : MonoBehaviour, IGameStateObserver
     private int currentLevel = 1;
     private const string _resetTag = "ResetTag";
     private const string _undoTag = "UndoTag";
+    private const string _pauseTag = "PauseTag";
 
-    public static ProblemSetController Instance { get; private set; }
-
-    void Awake()
-    {
-        if (Instance == null)
-        {
-            Instance = this;
-        }
-        else
-        {
-            Destroy(gameObject);
-        }
-    }
+    public Button pause;
+    public GameStateEnum state;
+    public TextMeshProUGUI pauseButtonText;
 
     void Start()
     {
+        Debug.Log("[NumberSelection] Starting...");
+        
         //subscribe to game state
         GameState.Instance.Subscribe(this);
-    
+        
         // add listeners to the undo and reset buttons by tag "ResetTag" and "UndoTag"
         GameObject.FindWithTag(_resetTag).GetComponent<Button>().onClick.AddListener(OnResetClicked);
         GameObject.FindWithTag(_undoTag).GetComponent<Button>().onClick.AddListener(OnUndoClicked);
-    
+        GameObject.FindWithTag(_pauseTag).GetComponent<Button>().onClick.AddListener(TogglePause);
+        
         problemSet = new ProblemSet();
         var newProblem = problemSet.GetNewProblemSet(currentLevel);
-        Debug.Log("Target Number: " + newProblem.Item1);
-
-
-        Debug.Log("Selectables: " + string.Join(", ", newProblem.Item2));
+        
+        Debug.Log("[NumberSelection] Target: " + newProblem.Item1);
+        Debug.Log("[NumberSelection] Selectables: " + string.Join(", ", newProblem.Item2));
 
         // Set the target number text
         targetNumberText.text = " " + newProblem.Item1; // Add this line
-
-
 
        // Create a button for each number selectable
         foreach (var selectable in newProblem.Item2)
@@ -93,7 +84,8 @@ public class ProblemSetController : MonoBehaviour, IGameStateObserver
                 }
             }
         }
-
+        
+        GameState.Instance.SetGameState(GameStateEnum.CountdownBeingSolved);
     }
    
     /// <summary>
@@ -103,6 +95,7 @@ public class ProblemSetController : MonoBehaviour, IGameStateObserver
     /// <author>Sebastian Kjallgren, Tom Palin</author>
     public void OnGameStateChanged(GameStateEnum gameState)
     {
+        state = gameState;
         switch (gameState)
         {
 
@@ -306,6 +299,8 @@ public class ProblemSetController : MonoBehaviour, IGameStateObserver
         
         equationContainer.text = "";
         
+        if (userSelectables == null) return;
+        
         // add all the user selectables back to the screen and clear the user selectables list
         foreach (ProblemSelectable selectable in userSelectables)
         {
@@ -315,8 +310,6 @@ public class ProblemSetController : MonoBehaviour, IGameStateObserver
                 AddSelectableToCanvas(selectable);
             }
         }
-        
-        userSelectables.Clear();
     }
 
     /// <summary>
@@ -342,5 +335,59 @@ public class ProblemSetController : MonoBehaviour, IGameStateObserver
         {
             Destroy(child.gameObject);
         }
+    }
+    
+    public void TogglePause()
+    {
+        if (state == GameStateEnum.TetrisPlayable || state == GameStateEnum.CountdownBeingSolved)
+        {
+            PauseGame();
+        }
+        else
+        {
+            ResumeGame();
+        }
+    }
+    
+    public void PauseGame()
+    {
+        Debug.Log("[NumberSelection] User has paused the game (current state" + state.ToString() + ").");
+        
+        // remove all the numbers and operators from the screen
+        foreach (Transform child in buttonContainer)
+        {
+            Destroy(child.gameObject);
+        }
+        foreach (Transform child in operatorButtonContainer)
+        {
+            Destroy(child.gameObject);
+        }
+        
+        equationContainer.text = "";
+        
+        if (state == GameStateEnum.TetrisPlayable)
+        {
+            GameState.Instance.SetGameState(GameStateEnum.TetrisPlayableButPaused);
+        }
+        else if (state == GameStateEnum.CountdownBeingSolved)
+        {
+            GameState.Instance.SetGameState(GameStateEnum.CountdownBeingSolvedButPaused);
+        }
+        
+        pauseButtonText.text = "Resume"; // Change the button text back to "Resume"
+    }
+    
+    public void ResumeGame()
+    {
+        Debug.Log("[NumberSelection] User has resumed the game (current state" + state.ToString() + ").");
+        if (state == GameStateEnum.TetrisPlayableButPaused)
+        {
+            GameState.Instance.SetGameState(GameStateEnum.TetrisPlayable);
+        }
+        else if (state == GameStateEnum.CountdownBeingSolvedButPaused)
+        {
+            GameState.Instance.SetGameState(GameStateEnum.CountdownBeingSolved);
+        }
+        pauseButtonText.text = "Pause"; // Change the button text back to "Pause"
     }
 }

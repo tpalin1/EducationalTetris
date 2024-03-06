@@ -10,6 +10,7 @@ TagManager:
   - ResetTag
   - Selectables
   - StartGameTag
+  - PauseTag
   layers:
   - Default
   - TransparentFX
