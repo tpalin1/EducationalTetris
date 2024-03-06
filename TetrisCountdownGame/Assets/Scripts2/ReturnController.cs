@@ -1,9 +1,9 @@
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
-namespace GameOver
+namespace Return
 {
-    public class GameOverController : MonoBehaviour
+    public class Return : MonoBehaviour
     {
         public UnityEngine.UI.Button ReturnButton;
 
@@ -24,7 +24,7 @@ namespace GameOver
         public void ReturnToStart()
         {
             // Load the start scene
-            SceneManager.LoadScene("Start");
+            SceneManager.LoadScene("StartGameScene");
         }
     }
 }
