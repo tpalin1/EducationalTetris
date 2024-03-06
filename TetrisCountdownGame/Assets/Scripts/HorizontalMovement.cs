@@ -34,10 +34,10 @@ public class HorizontalMovement : MonoBehaviour, IGameStateObserver
 
     public TMP_Text scoreText;
 
-    public int scoreOneline = 40;
-    public int scoreTwoline = 100;
-    public int scoreThreeline = 300;
-    public int scoreFourline = 1200;
+    public int scoreOneline = 4;
+    public int scoreTwoline = 10;
+    public int scoreThreeline = 30;
+    public int scoreFourline = 60;
 
 
     void Start()
@@ -279,6 +279,8 @@ public class HorizontalMovement : MonoBehaviour, IGameStateObserver
         
         //Increase the gamestate socre
 
+        currentScore = GameState.Instance.GetScore();
+
         GameState.Instance.SetScore(currentScore += scoreOneline);
 
         
@@ -286,17 +288,23 @@ public class HorizontalMovement : MonoBehaviour, IGameStateObserver
 
     public void ClearedTwoLines()
     {
+        currentScore = GameState.Instance.GetScore();
+
         GameState.Instance.SetScore(currentScore += scoreTwoline);
         
     }
 
     public void ClearedThreeLines()
     {
-        GameState.Instance.SetScore(currentScore += scoreThreeline);
+        currentScore = GameState.Instance.GetScore();
+
+        GameState.Instance.SetScore(currentScore+= scoreThreeline);
     }
 
     public void ClearedFourLines()
     {
+
+        currentScore = GameState.Instance.GetScore();
         GameState.Instance.SetScore(currentScore += scoreFourline);
         
     }
