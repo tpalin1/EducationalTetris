@@ -1366,10 +1366,6 @@ MonoBehaviour:
   scoreTwoline: 200
   scoreThreeline: 300
   scoreFourline: 1000
-<<<<<<< HEAD
-=======
-  hud_score: {fileID: 573561323}
->>>>>>> 2c5b1edb7b85ffc69e23e9954e2f9cecea336104
 --- !u!1 &1995783143
 GameObject:
   m_ObjectHideFlags: 0
