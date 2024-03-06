@@ -49,6 +49,9 @@ namespace GameStateSpace
         // Define grid array
         private Transform[,] grid = new Transform[gridWidth, gridHeight];
 
+        //Score
+        public int currentScore = 0;
+
         public static GameState Instance
         {
             get
@@ -66,6 +69,8 @@ namespace GameStateSpace
                 return _instance;
             }
         }
+
+
         
         public void Awake()
         {
@@ -87,6 +92,16 @@ namespace GameStateSpace
         public GameStateEnum GetGameState()
         {
             return _gameState;
+        }
+
+        public void SetScore(int score)
+        {
+            currentScore = score;
+        }
+
+        public int GetScore()
+        {
+            return currentScore;
         }
 
         /// <summary>
