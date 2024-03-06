@@ -3,11 +3,7 @@ using UnityEngine.SceneManagement;
 
 namespace Return
 {
-<<<<<<< HEAD
-    public class ReturnController : MonoBehaviour
-=======
     public class Return : MonoBehaviour
->>>>>>> d5efaacbfed3774e36a608823f838f6a6d835291
     {
         public UnityEngine.UI.Button ReturnButton;
 
