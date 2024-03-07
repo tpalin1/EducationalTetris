@@ -18,6 +18,8 @@ namespace GameOver
         {
 
 
+            
+
             scoreText.text = "Your score was " +GameState.Instance.GetScore().ToString();
             // Ensure the buttons are assigned before using them
             if (RestartButton != null)
@@ -41,13 +43,14 @@ namespace GameOver
             }
         }
 
+       // Modify the RestartGame method in GameOverController to reset the game state
         public void RestartGame()
         {
-            // Restart the game by loading the MainGame scene
-            GameState.Instance.SetGameState(GameStateEnum.GameNotStarted);
-            SceneManager.LoadScene("MainGame");
+            // Reset the game state
+            GameState.Instance.ResetGame();
+            // Load the start scene
+            SceneManager.LoadScene("Start");
         }
-
         public void QuitGame()
         {
 #if UNITY_EDITOR

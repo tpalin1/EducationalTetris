@@ -85,6 +85,22 @@ namespace GameStateSpace
             }
         }
 
+        // Add a method in GameState class to reset the game state
+        public void ResetGame()
+        {
+            SetScore(0);
+            SetGameState(GameStateEnum.GameNotStarted);
+            // Clear the grid
+            for (int x = 0; x < gridWidth; x++)
+            {
+                for (int y = 0; y < gridHeight; y++)
+                {
+                    grid[x, y] = null;
+                }
+            }
+            
+        }
+
         /// <summary>
         /// Explicitly returns the current game state
         /// </summary>

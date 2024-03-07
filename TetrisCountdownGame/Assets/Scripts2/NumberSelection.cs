@@ -105,17 +105,26 @@ public class ProblemSetController : MonoBehaviour, IGameStateObserver
     {
         switch (gameState)
         {
+
             case GameStateEnum.TetrisGameUnsolved:
-                //Clear and make a new problem 
+            //Clear and make a new problem 
+            if (buttonContainer != null)
+            {
                 foreach (Transform child in buttonContainer)
                 {
                     Destroy(child.gameObject);
                 }
+            }
+            if (operatorButtonContainer != null)
+            {
                 foreach (Transform child in operatorButtonContainer)
                 {
                     Destroy(child.gameObject);
                 }
-                break;
+            }
+            Debug.Log("The game state is now TetrisGameUnsolved");
+            break;
+            
             case GameStateEnum.CountdownBeingSolved:
                 userSelectables.Clear();
                 equationContainer.text = "";
@@ -129,7 +138,8 @@ public class ProblemSetController : MonoBehaviour, IGameStateObserver
                     AddSelectableToCanvas(selectable);
                 }
                 break;
-            // ... for other game states
+
+         
             default:
                 break;
         }
@@ -148,6 +158,12 @@ public class ProblemSetController : MonoBehaviour, IGameStateObserver
         {
             case Number number:
             {
+
+                //Do null checks 
+                if (buttonContainer == null) return;
+                if (buttonPrefab == null) return;
+                if (buttonContainer.transform == null) return;
+
                 Button button = Instantiate(buttonPrefab, buttonContainer.transform);
                 string buttonText = number.ToString().Split('=')[1].Trim(' ', '}');
                 button.GetComponentInChildren<TextMeshProUGUI>().text = buttonText;
@@ -156,6 +172,12 @@ public class ProblemSetController : MonoBehaviour, IGameStateObserver
             }
             case BinaryOperator binaryOperator:
             {
+
+                //Do null checks
+                if (operatorButtonContainer == null) return;
+                if (buttonPrefab == null) return;
+                if (operatorButtonContainer.transform == null) return;
+                
                 Button button = Instantiate(buttonPrefab, operatorButtonContainer.transform);
                 string buttonText = "";
                 switch (binaryOperator.BinOp)
