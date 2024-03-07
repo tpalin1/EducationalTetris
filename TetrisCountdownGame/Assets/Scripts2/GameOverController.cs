@@ -49,7 +49,7 @@ namespace GameOver
             // Reset the game state
             GameState.Instance.ResetGame();
             // Load the start scene
-            SceneManager.LoadScene("Start");
+            SceneManager.LoadScene("StartGameScene");
         }
         public void QuitGame()
         {
