@@ -1,0 +1,24 @@
+In order to ensure consistent Git commits and to enable clear identification with what each commit message does, following these standards is key to achieving this. 
+
+- To commit, start the git message with [git commit]
+
+Next should be the type of commit and the changes made:
+
+doc -  Documentation changes or updates
+feat - A new feature has been added to the codebase
+fix - A bug fix or correction to resolve an issue
+style - Changes related to code formatting, indentation or whitespace
+refactor - Code refactor without adding new features/fixing bugs
+test - Addition or modification of test cases.
+chore - Other changes not directly affecting the code (build scripts, dependencies)
+
+After identifying the type of commit, next comes the message, describing the type of commit.
+
+- The message should be descriptive, no more than 100 characters long, describing in detail the changes made.
+
+"This commit ..."
+
+The structure is as follows
+
+git commit -am "[type]: [message]"
+
