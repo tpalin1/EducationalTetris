@@ -9,8 +9,8 @@ namespace ProblemSetSpace
     /// </summary>
     public class ProblemSet
     {
-        private const int MinNumber = 0;
-        private const int MaxNumber = 9;
+        private int MinNumber = 0;
+        private int MaxNumber = 9;
 
         private readonly System.Random _random = new System.Random();
 
@@ -29,6 +29,18 @@ namespace ProblemSetSpace
             int numSelectables = _random.Next(3, 6); // Random number of selectables between 3 and 6
             List<ProblemSelectable> solutionSelectables = new List<ProblemSelectable>();
             List<ProblemSelectable> providedSelectables = new List<ProblemSelectable>();
+
+            // change the size of min and max to make more difficult
+            if (currentLevel > 9 && currentLevel < 20) 
+            {
+                MinNumber = 5;
+                MaxNumber = 35;
+            }
+            else if (currentLevel > 20)
+            {
+                MinNumber = 10;
+                MaxNumber = 100;
+            }
 
             // generate the solutionSelectables
             for (int i = 0; i < numSelectables; i++)
