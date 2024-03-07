@@ -121,11 +121,11 @@ namespace ProblemSetSpace
           switch (currentLevel)
           {
             case < 10:
-              return new Number(_random.Next(0, 20));
+              return new Number(_random.Next(0, 10));
             case < 20:
-              return new Number(_random.Next(0, 50));
+              return new Number(_random.Next(0, 20));
             default:
-              return new Number(_random.Next(0, 100));
+              return new Number(_random.Next(0, 50));
           }
         }
 

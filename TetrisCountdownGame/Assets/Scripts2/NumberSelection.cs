@@ -76,6 +76,14 @@ public class ProblemSetController : MonoBehaviour, IGameStateObserver
                         case BinaryOperatorType.Subtraction:
                             buttonText = "-";
                             break;
+
+                        case BinaryOperatorType.Multiplication:
+                            buttonText = "*";
+                            break;
+                        
+                        case BinaryOperatorType.Division:
+                            buttonText = "/";
+                            break;
                         // Add cases for other binary operators here
                     }
                     button.GetComponentInChildren<TextMeshProUGUI>().text = buttonText;
@@ -181,6 +189,13 @@ public class ProblemSetController : MonoBehaviour, IGameStateObserver
                     case BinaryOperatorType.Subtraction:
                         buttonText = "-";
                         break;
+                    case BinaryOperatorType.Multiplication:
+                        buttonText = "*";
+                        break;
+                    case BinaryOperatorType.Division:
+                        buttonText = "/";
+                        break;
+                        
                 }
                 button.GetComponentInChildren<TextMeshProUGUI>().text = buttonText;
                 button.onClick.AddListener(() => OnButtonClicked(selectable, button));
