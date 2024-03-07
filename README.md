@@ -1,10 +1,17 @@
-# Tetris-Countdown
+# BlockSum
 
-Tetris-Countdown, designed specifically for ages 11 to 14, helps students to practise and learn concepts of mental mathematics, solidifying concepts like BODMAS/ BIDMAS by building on the mechanics of the game “tetris” and thereby enables critical thinking within a limited time frame. The game integrates the challenge of solving maths puzzles with the classic gameplay of Tetris, running in a grid of 20x10. Players are presented with a maths problem featuring a random target number and a set of selectable numbers and operations, which they have to complete before the tetris block descending from the top reaches the bottom of the screen.  
+BlockSum, designed specifically for ages 11 to 14, helps students to practise and learn concepts of mental mathematics, solidifying concepts like BODMAS/ BIDMAS by building on the mechanics of the game “tetris” and thereby enables critical thinking within a limited time frame. The game integrates the challenge of solving maths puzzles with the classic gameplay of Tetris, running in a grid of 20x10. Players are presented with a maths problem featuring a random target number and a set of selectable numbers and operations, which they have to complete before the tetris block descending from the top reaches the bottom of the screen.  
 
-The goal is to combine these elements in the correct sequence to match the target number, thereby solving the puzzle. Upon solving each maths problem, the game transitions to a Tetris mode, where the player can manipulate this block by rotating it or moving it horizontally, aiming to place it strategically on the tetris board.
+The goal is to combine these elements in the correct sequence to match the target number, thereby solving the puzzle. Upon solving each maths problem, the game transitions to a Tetris mode, where the player can manipulate this block by rotating it or moving it horizontally, aiming to place it strategically on the tetris board. If a user manages to get 10 sums correctly, then the difficulty will increase and more operations will become available.
 
-(TODO include screenshot of final game)
+![Title](Images/Screenshot%202024-03-07%20112339.png)
+
+![Title](Images/Screenshot%202024-03-07%20112414.png)
+
+![Title](Images/Screenshot%202024-03-07%20112440.png)
+
+![Title](Images/Screenshot%202024-03-07%20112514.png)
+
 
 ## Installation
 
