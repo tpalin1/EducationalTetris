@@ -6,11 +6,11 @@ The goal is to combine these elements in the correct sequence to match the targe
 
 ![Title](Images/Screenshot%202024-03-07%20112339.png)
 
-![Title](Images/Screenshot%202024-03-07%20112414.png)
+![Title](Images/Screenshot%202024-03-07%20120556.png)
 
-![Title](Images/Screenshot%202024-03-07%20112440.png)
+![Title](Images/Screenshot%202024-03-07%20120743.png)
 
-![Title](Images/Screenshot%202024-03-07%20112514.png)
+![Title](Images/Screenshot%202024-03-07%20121156.png)
 
 
 ## Installation
