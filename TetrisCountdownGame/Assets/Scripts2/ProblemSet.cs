@@ -31,15 +31,15 @@ namespace ProblemSetSpace
             List<ProblemSelectable> providedSelectables = new List<ProblemSelectable>();
 
             // change the size of min and max to make more difficult
-            if (currentLevel > 9 && currentLevel < 20) 
+            if (currentLevel > 5 && currentLevel < 15) 
             {
-                MinNumber = 5;
-                MaxNumber = 35;
+                MinNumber = 15;
+                MaxNumber = 70;
             }
-            else if (currentLevel > 20)
+            else if (currentLevel > 15)
             {
-                MinNumber = 10;
-                MaxNumber = 100;
+                MinNumber = 20;
+                MaxNumber = 150;
             }
 
             // generate the solutionSelectables
@@ -60,6 +60,8 @@ namespace ProblemSetSpace
 
             _targetNumber = EvaluateSelectables(solutionSelectables);
 
+
+
             // add some more selectables to the providedSelectables -- this is to make the problem more interesting
             int j = _random.Next(1, 2);
             for (int i = 0; i < j; i++)
@@ -77,7 +79,7 @@ namespace ProblemSetSpace
             providedSelectables = providedSelectables.OrderBy(x => _random.Next()).ToList();
 
             // if the target number is too low or too high then recurse to get a new problem set
-            return _targetNumber is < MinNumber or > MaxNumber 
+            return (_targetNumber < MinNumber || _targetNumber > MaxNumber )
                 ? GetNewProblemSet(currentLevel) 
                 : (_targetNumber, providedSelectables);
         }
@@ -93,7 +95,7 @@ namespace ProblemSetSpace
           List<BinaryOperatorType> operators = new List<BinaryOperatorType> {BinaryOperatorType.Addition, 
               BinaryOperatorType.Subtraction};
 
-          if (currentLevel >= 10)
+          if (currentLevel >= 6)
           {
             operators.Add(BinaryOperatorType.Multiplication);
           }
@@ -135,9 +137,9 @@ namespace ProblemSetSpace
             case < 10:
               return new Number(_random.Next(0, 10));
             case < 20:
-              return new Number(_random.Next(0, 20));
+              return new Number(_random.Next(0, 10));
             default:
-              return new Number(_random.Next(0, 50));
+              return new Number(_random.Next(0, 10));
           }
         }
 
